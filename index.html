@@ -1,69 +1,86 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>evervie — graphic & digital designer</title>
 <meta name="description" content="Portfolio of evervie, graphic and digital designer.">
+<meta name="theme-color" content="#050506">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❀</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,200;0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="glow" id="glow" aria-hidden="true"></div>
+<div id="splash"><div class="sp-in"><i class="gorb"></i><h2 id="spHello"></h2><p id="spRole"></p><span class="pillb">PORTFOLIO</span></div></div>
+<canvas id="bg3d" aria-hidden="true"></canvas>
+<canvas id="mini" aria-hidden="true"></canvas>
+<canvas id="sigil" aria-hidden="true"></canvas>
 
 <header class="nav">
   <a class="logo" href="#top" id="logo"></a>
-  <nav><a href="#projects">projects</a><a href="#about">about</a><a href="#contact">contact</a></nav>
-  <button class="theme" id="theme" aria-label="Switch light / dark theme"></button>
+  <nav><a href="#projects" data-i="nav_projects"></a><a href="#about" data-i="nav_about"></a><a href="#contact" data-i="nav_contact"></a></nav>
+  <div class="tools">
+    <span class="soc" id="topSoc"></span>
+    <button class="lang" id="lang"><span data-l="en">EN</span> / <span data-l="ru">RU</span></button>
+  </div>
 </header>
 
 <main id="top">
   <section class="hero">
     <div class="orb" aria-hidden="true"><i></i><i></i><i></i></div>
     <span class="pill" id="role"></span>
-    <h1 id="headline"></h1>
+    <h1 class="pf" aria-label="Portfolio"><span class="en" id="pfEn" aria-hidden="true"></span><i class="rule"></i></h1>
     <p class="lead" id="intro"></p>
-    <a class="go" href="#projects" aria-label="See projects"><svg viewBox="0 0 40 12"><path d="M0 6h38M33 1l5 5-5 5" fill="none" stroke="currentColor"/></svg></a>
+    <a class="scrolly" href="#projects"><span class="mouse" aria-hidden="true"><i></i></span><span class="sl" data-i="scroll"></span></a>
   </section>
 
-  <section id="projects" class="sec">
-    <h2>selected <em>projects</em></h2>
-    <div class="grid" id="grid"></div>
+  <section id="projects" class="sec proj">
+    <div class="p-head">
+      <div><p class="eyebrow rv"><i></i><span data-i="p_eyebrow"></span></p><h2 class="rv" data-i="h_projects"></h2><p class="p-sub rv" data-i="p_sub"></p></div>
+      <div class="filters rv" id="filters"></div>
+    </div>
+    <div class="bento" id="bento"></div>
+    <div class="pager" id="pager" hidden><button id="pPrev" aria-label="←">←</button><span id="pCount"></span><button id="pNext" aria-label="→">→</button></div>
   </section>
 
   <section id="about" class="sec about">
-    <div class="photo" id="photo"></div>
-    <div>
-      <h2>about <span>me.</span></h2>
+    <div id="waves" aria-hidden="true"></div>
+    <div class="photo rv" id="photo"></div>
+    <div class="glass pad rv">
+      <h2 data-i="h_about"></h2>
       <p id="aboutText"></p>
-      <a class="btn" id="resume" hidden>download resume</a>
+      <a class="btn" id="resume" data-i="resume" hidden></a>
     </div>
-    <div class="skills">
-      <h3>skills</h3><ul id="skills"></ul>
-      <h3>tools</h3><div class="chips" id="tools"></div>
+    <div class="skills pad rv">
+      <h3 data-i="skills"></h3><ul id="skills"></ul>
+      <h3 data-i="tools"></h3><div class="chips" id="tools"></div>
     </div>
   </section>
 
   <section id="contact" class="sec contact">
-    <h2 id="cta"></h2>
-    <a class="btn" id="mail">contact me</a>
-    <ul class="social" id="social"></ul>
+    <div class="glass pad c-box rv">
+      <h2 id="cta"></h2>
+      <a class="btn" id="mail" data-i="mail"></a>
+      <div class="ico-row" id="socIcons"></div>
+    </div>
   </section>
 </main>
 
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Project" hidden>
-  <div class="m-top"><button class="m-back" id="mBack">← back to projects</button></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" hidden>
+  <div class="m-top"><button class="m-back" id="mBack" data-i="back"></button></div>
   <div class="m-body" id="mBody"></div>
   <div class="m-foot">
     <span id="mCount"></span>
-    <div><button id="mPrev" aria-label="Previous project">←</button><button id="mNext" aria-label="Next project">→</button></div>
-    <a class="btn" id="mLink" target="_blank" rel="noopener" hidden>view website ↗</a>
+    <div><button id="mPrev">←</button><button id="mNext">→</button></div>
+    <a class="btn" id="mLink" data-i="site" target="_blank" rel="noopener" hidden></a>
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="projects.js"></script>
 <script src="script.js"></script>
+<script src="flower.js"></script>
 </body>
 </html>
