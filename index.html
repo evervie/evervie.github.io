@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="splash"><div class="sp-in"><i class="gorb"></i><h2 id="spHello"></h2><p id="spRole"></p><span class="pillb">PORTFOLIO</span></div></div>
+<div id="splash"><div class="sp-in"><div class="sp-txt"><h2 id="spHello"></h2><canvas id="spStar" aria-hidden="true"></canvas><i class="gstar" aria-hidden="true"></i></div></div></div>
 <canvas id="bg3d" aria-hidden="true"></canvas>
 <canvas id="mini" aria-hidden="true"></canvas>
 <canvas id="sigil" aria-hidden="true"></canvas>
@@ -31,8 +31,7 @@
   <section class="hero">
     <div class="orb" aria-hidden="true"><i></i><i></i><i></i></div>
     <span class="pill" id="role"></span>
-    <h1 class="pf" aria-label="Portfolio"><span class="en" id="pfEn" aria-hidden="true"></span><i class="rule"></i></h1>
-    <p class="lead" id="intro"></p>
+    <h1 class="pf" aria-label="Portfolio"><span class="en" id="pfEn" aria-hidden="true"></span><canvas id="pf3d" aria-hidden="true"></canvas></h1>
     <a class="scrolly" href="#projects"><span class="mouse" aria-hidden="true"><i></i></span><span class="sl" data-i="scroll"></span></a>
   </section>
 
@@ -41,12 +40,11 @@
       <div><p class="eyebrow rv"><i></i><span data-i="p_eyebrow"></span></p><h2 class="rv" data-i="h_projects"></h2><p class="p-sub rv" data-i="p_sub"></p></div>
       <div class="filters rv" id="filters"></div>
     </div>
-    <div class="bento" id="bento"></div>
-    <div class="pager" id="pager" hidden><button id="pPrev" aria-label="←">←</button><span id="pCount"></span><button id="pNext" aria-label="→">→</button></div>
+    <div class="grid" id="grid"></div>
   </section>
 
   <section id="about" class="sec about">
-    <div id="waves" aria-hidden="true"></div>
+    <div id="waves" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i><b class="frost"></b></div>
     <div class="photo rv" id="photo"></div>
     <div class="glass pad rv">
       <h2 data-i="h_about"></h2>
@@ -65,8 +63,10 @@
       <a class="btn" id="mail" data-i="mail"></a>
       <div class="ico-row" id="socIcons"></div>
     </div>
+    <canvas id="garden" aria-hidden="true"></canvas>
   </section>
 </main>
+<footer class="foot" id="foot"></footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" hidden>
   <div class="m-top"><button class="m-back" id="mBack" data-i="back"></button></div>
@@ -82,5 +82,6 @@
 <script src="projects.js"></script>
 <script src="script.js"></script>
 <script src="flower.js"></script>
+<script src="glass.js"></script>
 </body>
 </html>

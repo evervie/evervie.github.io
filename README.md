@@ -12,6 +12,11 @@ Static site: HTML + CSS + JS, no build step. Three.js is loaded from a CDN (cdnj
 ## Projects gallery
 One list: `window.PROJECTS` in `projects.js` (a full template with all fields is in the comment). Card = one main image + title, direction, year, role. Case page = task -> insight -> solution -> results + gallery with captions. Filters show up only when real projects fall into 2+ categories; `special: true` lists a case under "Special cases"; `soon: true` is a non-clickable placeholder (keep just one).
 
+## What is where (v8)
+- `glass.js` — welcome-screen star, 3D glass letters PORTfolio, crystal tulips at the bottom. `flower.js` — hero flower, corner sigil, cursor star.
+- Projects are in `projects.js`: each has `tags` (3 shown on the card, they become filters), `badge`, `cover`, `images`. Pictures live in `assets/`.
+- First project has no screenshots yet: add them to `assets/utilization/` and set `cover` + `images` (a drawn browser window is shown until then).
+
 ## Notes
 - The site is black only (no light theme). Weak devices (≤4 CPU cores / narrow screens) get fewer particles and a lighter wave mesh. "Reduce motion" turns off the spinning, pollen, waves motion and the cursor flower.
 - Cursor flower is desktop only.

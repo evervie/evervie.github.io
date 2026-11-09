@@ -1,9 +1,9 @@
 /* ============ EDIT YOUR INFO HERE ============
    Texts that differ by language live in SITE.text.en / SITE.text.ru. */
 window.SITE = {
-  name: "evervie",                       // logo text (a dot is added automatically)
+  name: "evervie",
   photo: "",                             // e.g. "assets/me.jpg" — leave empty for a placeholder
-  tools: ["Figma", "Ps", "Ai"],          // edit to your real tools
+  tools: ["Figma", "Ps", "Ai", "Tilda"],
   resume: "",                            // "assets/resume.pdf" or { en: "...", ru: "..." } — button hides if empty
   email: "design.eivie@gmail.com",
   social: {
@@ -17,42 +17,78 @@ window.SITE = {
       role: "graphic & digital designer",
       intro: "I'm a graphic and digital designer who turns ideas into visual solutions.",
       about: "Write a few sentences about yourself here.",
-      skills: ["Branding", "Graphic Design", "Web Design"],
+      skills: ["Branding", "Graphic Design", "Web Design", "Packaging"],
       cta: "let's create something together.",
     },
     ru: {
       role: "графический и digital-дизайнер",
       intro: "Я графический и digital-дизайнер: превращаю идеи в визуальные решения.",
       about: "Напишите здесь несколько предложений о себе.",
-      skills: ["Брендинг", "Графический дизайн", "Веб-дизайн"],
+      skills: ["Брендинг", "Графический дизайн", "Веб-дизайн", "Дизайн упаковки"],
       cta: "давайте создадим что-нибудь вместе.",
     },
   },
 };
 
-/* ============ PROJECTS + SPECIAL CASES (one list) ============
-   Start with 3-5 real cases. Each card = one main image (same crop for all), short meta (title, direction, year, role).
-   Inside a case: task -> insight -> solution -> results, then a gallery with captions.
-   Filters appear only when real projects fall into 2+ categories. One "soon" card is enough to hint the format.
+/* ============ PROJECTS ============
+   Each card shows up to 3 tags (they also become the filter buttons).
    Text fields can be a plain string or { en: "...", ru: "..." }.
-  {
-    title: { en: "Project name", ru: "Название" },
-    type:  { en: "Branding", ru: "Брендинг" },          // direction (also shown on the card)
-    cat:   { en: "Branding", ru: "Брендинг" },          // filter category
-    special: true,                                      // optional: also listed under "Special cases"
-    year: 2026,
-    role: { en: "Art direction, identity", ru: "Арт-дирекция, айдентика" },
-    description: { en: "One or two sentences.", ru: "Одно-два предложения." },
-    task:     { en: "What the client needed.", ru: "Что нужно было клиенту." },
-    insight:  { en: "The constraint or the key idea.", ru: "Ограничение или ключевая мысль." },
-    solution: { en: "What you made.", ru: "Что вы сделали." },
-    results:  { en: "Final deliverables / outcome.", ru: "Итоговые носители / результат." },
-    cover: "assets/project-1/cover.jpg",
-    images: [ { src: "assets/project-1/1.jpg", caption: { en: "Caption", ru: "Подпись" } }, "assets/project-1/2.jpg" ],
-    link: "https://...",                                // optional
-    soon: true                                          // optional: shown but not clickable
-  }
-*/
+   cover: card picture.  images: gallery inside the project.  mock: a drawn browser window (used while there are no screenshots).
+   badge: small label on the card.  year: optional — add it when you want it shown.
+   Real screenshots of the website: put them in assets/utilization/ and list them in "cover" + "images" of the first project. */
 window.PROJECTS = [
-  { soon: true, title: { en: "Next case", ru: "Следующий кейс" }, type: { en: "In progress", ru: "В работе" }, year: 2026 },
+  {
+    title: { en: "EcoUtil — recycling website", ru: "ЭкоУтиль — сайт по утилизации отходов" },
+    type:  { en: "Website for a company", ru: "Сайт компании" },
+    badge: { en: "My first project · diploma", ru: "Мой первый проект · диплом" },
+    tags:  ["Tilda", { en: "UX/UI design", ru: "UX/UI дизайн" }, { en: "Web design", ru: "Веб-дизайн" }],
+    description: {
+      en: "A corporate website for a waste-recycling company. This is the very first website I made — and the work I defended my diploma with at my educational institution.",
+      ru: "Корпоративный сайт компании по переработке и утилизации отходов. Это самый первый мой сайт — именно с ним я защищала диплом в учебном заведении."
+    },
+    task: {
+      en: "Present the company as reliable and make it easy for business clients to find licenses and prices and to leave a request.",
+      ru: "Показать компанию надёжной и сделать так, чтобы корпоративному клиенту было легко найти лицензии и цены и оставить заявку."
+    },
+    solution: {
+      en: "A clear structure: a first screen with key figures (10 years of experience, 2000+ tonnes a year, 20+ corporate clients), advantages, a licenses and certificates block, separate pages for the price list and the online request, and contacts.",
+      ru: "Понятная структура: первый экран с ключевыми цифрами (10 лет опыта, 2000+ тонн в год, 20+ корпоративных клиентов), преимущества, блок лицензий и сертификатов, отдельные страницы с прайс-листом и онлайн-заявкой, контакты."
+    },
+    results: {
+      en: "A live, working website on Tilda — my first complete project and my diploma work.",
+      ru: "Рабочий сайт на Tilda — мой первый законченный проект и дипломная работа."
+    },
+    mock: { url: "utilizatsiyaothodov.tilda.ws", name: "ЭкоУтиль", head: { en: "A greener future is our standard", ru: "Экологичное будущее — наш стандарт утилизации" }, stats: ["10", "2000+", "20+"] },
+    link: "https://utilizatsiyaothodov.tilda.ws"
+  },
+  {
+    title: "homakoll elastic",
+    type:  { en: "Label design", ru: "Дизайн этикетки" },
+    badge: { en: "Test assignment", ru: "Тестовое задание" },
+    tags:  ["Figma", "Illustrator", { en: "Packaging design", ru: "Дизайн упаковки" }],
+    description: {
+      en: "A label for HOMA's ready-to-use acrylic tile adhesive (3.5 kg bucket) — a test assignment from an employer. I carried it further: a bucket mockup, a promo banner and an infographic card in one style.",
+      ru: "Этикетка для готового акрилового клея для плитки HOMA (ведро 3,5 кг) — тестовое задание от работодателя. Я довела его до целого комплекта: мокап ведра, промо-баннер и инфографика в одном стиле."
+    },
+    task: {
+      en: "Design a label that reads in a second: odour-free, eco-friendly, waterproof, frost-resistant, class D2TE, for tiles up to 45 × 45 cm.",
+      ru: "Сделать этикетку, которая считывается за секунду: без запаха, экологичный, водостойкий, морозостойкий, класс D2TE, для плитки до 45 × 45 см."
+    },
+    solution: {
+      en: "Strict black-and-red palette of the brand; clear hierarchy — logo, product name, what it is, icons, and a black strip with class and benefits. A red ribbon wraps around the bucket and links the label with the tile texture.",
+      ru: "Строгая чёрно-красная палитра бренда; чёткая иерархия — логотип, название, что это, иконки и чёрная полоса с классом и преимуществами. Красная лента огибает ведро и связывает этикетку с фактурой плитки."
+    },
+    results: {
+      en: "Label, 3D bucket mockup, promo banner and infographic card.",
+      ru: "Этикетка, 3D-мокап ведра, промо-баннер и инфографика."
+    },
+    cover: "assets/homakoll/2-mockup-sm.jpg",
+    images: [
+      { src: "assets/homakoll/1-label.jpg",       caption: { en: "Label", ru: "Этикетка" } },
+      { src: "assets/homakoll/2-mockup.jpg",      caption: { en: "Bucket mockup", ru: "Мокап ведра" } },
+      { src: "assets/homakoll/3-banner.jpg",      caption: { en: "Promo banner", ru: "Промо-баннер" } },
+      { src: "assets/homakoll/4-infographic.jpg", caption: { en: "Infographic card", ru: "Инфографика" } },
+    ],
+  },
+  { soon: true, title: { en: "Next case", ru: "Следующий кейс" }, type: { en: "In progress", ru: "В работе" } },
 ];

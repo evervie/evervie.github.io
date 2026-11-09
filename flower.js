@@ -1,4 +1,4 @@
-/* Glass world (Three.js r128). Background canvas (#bg3d): hero flower (anchored to the first screen, also on the project page) + glass waves pinned to the About block.
+/* Glass world (Three.js r128). Background canvas (#bg3d): hero flower (anchored to the first screen, also on the project page) (waves removed: About now uses a CSS frosted gradient).
    Two small canvases above the page: bottom-left star sigil (#sigil) and the cursor star (#mini). Tweak: surf() = petal shape, SCROLL_CLOSE = how fast the flower closes on scroll. */
 (() => {
   const root = document.documentElement, $ = id => document.getElementById(id);
@@ -88,42 +88,6 @@
     }
     po.g.attributes.position.needsUpdate = true; po.g.attributes.a.needsUpdate = true;
   }
-  /* ---- glass waves (About block): five long ribbons across the whole screen ---- */
-  const NX = LOW ? 70 : 120, RS = LOW ? 12 : 20, NR = 5;
-  function makeWaves() {
-    const grp = new THREE.Group(), rib = [], idx = [];
-    for (let i = 0; i < NX; i++) for (let j = 0; j < RS; j++) { const a = i * (RS + 1) + j, b = a + 1, c = a + RS + 1, d = c + 1; idx.push(a, c, b, b, c, d); }
-    for (let r = 0; r < NR; r++) {
-      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(new Float32Array((NX + 1) * (RS + 1) * 3), 3)); g.setIndex(idx);
-      const gm = glass(.24), im = irid(1.3, r * .25), m = new THREE.Mesh(g, gm), o = new THREE.Mesh(g, im); im.uniforms.v.value = .25; m.frustumCulled = o.frustumCulled = false; m.add(o); grp.add(m);
-      rib.push({ g, r, im, gm, d: new Float32Array(NX + 1), C: new Float32Array((NX + 1) * 3) });
-    }
-    return { grp, rib };
-  }
-  function wavesStep(W, t, hv, px, py, hw, fade) {
-    W.rib.forEach(({ g, r, im, gm, d, C }) => {
-      const P = g.attributes.position.array, ph = r * 1.3, wid = .26 + .06 * (r % 3); im.uniforms.t.value = t * .02 + r * .25; im.uniforms.k.value = 1.3 * fade; gm.opacity = .24 * fade;
-      for (let i = 0; i <= NX; i++) {   /* centre line */
-        const u = i / NX, X = (u - .5) * hw * 2.5, Y0 = Math.sin(u * 4.4 + t * .3 + ph) * .6 + Math.sin(u * 9.5 + t * .45 + ph * 2) * .1 + (r - 2) * .5;
-        if (hv > .02) d[i] = Math.min(.6, d[i] + Math.exp(-((X - px) ** 2 + (Y0 + d[i] - py) ** 2) * .4) * hv * .014);   /* wide soft push; stays after you leave */
-        C[i * 3] = X; C[i * 3 + 1] = Y0 + d[i]; C[i * 3 + 2] = Math.cos(u * 3.6 + t * .26 + ph) * .6 + d[i] * .8;
-      }
-      for (let i = 1; i < NX; i++) d[i] = d[i] * .5 + (d[i - 1] + d[i + 1]) * .25;   /* keep it round, no kinks */
-      for (let i = 0; i <= NX; i++) {
-        const a = Math.max(0, i - 1) * 3, b = Math.min(NX, i + 1) * 3, u = i / NX; d[i] *= .9999;
-        let Tx = C[b] - C[a], Ty = C[b + 1] - C[a + 1], Tz = C[b + 2] - C[a + 2]; const tl = Math.hypot(Tx, Ty, Tz) || 1; Tx /= tl; Ty /= tl; Tz /= tl;
-        let Nx = Ty, Ny = -Tx; const nl = Math.hypot(Nx, Ny) || 1; Nx /= nl; Ny /= nl;
-        const Bx = -Tz * Ny, By = Tz * Nx, Bz = Tx * Ny - Ty * Nx;
-        const tw = u * 3.2 + t * .22 + ph, ct = Math.cos(tw), st = Math.sin(tw), wd = wid * (1 + .3 * Math.sin(u * 6 + ph * 2 + t * .3)), th = wd * .2;   /* wide, thin glass slab that slowly twists */
-        for (let j = 0; j <= RS; j++) {
-          const a2 = j / RS * 6.2832, ca = Math.cos(a2), sa = Math.sin(a2), c = Math.sign(ca) * Math.sqrt(Math.abs(ca)) * wd, s = Math.sign(sa) * Math.sqrt(Math.abs(sa)) * th, k = (i * (RS + 1) + j) * 3;
-          const ox = c * ct - s * st, oy = c * st + s * ct;
-          P[k] = C[i * 3] + Nx * ox + Bx * oy; P[k + 1] = C[i * 3 + 1] + Ny * ox + By * oy; P[k + 2] = C[i * 3 + 2] + Bz * oy;
-        }
-      }
-      g.attributes.position.needsUpdate = true; g.computeVertexNormals();
-    });
-  }
   /* ---- corner sigil: eight-point glass star, needle, helix ribbon, sparkles ---- */
   function starGeo(n, ro, ri, longEvery, depth) {
     const s = new THREE.Shape();
@@ -155,17 +119,17 @@
     o.ims.forEach(im => { im.uniforms.t.value = tt * .02 + shift; });
   }
 
+  window.GLX = { glass, irid, env, starGeo, ez, cl, L, LOW, RM, touch };
   /* ---- setup ---- */
-  let R, C, S1, S3, F, po, W, SG = null, ST = null;
+  let R, C, S1, F, po, SG = null, ST = null;
   const mouse = { x: 0, y: 0 }; let tx = 0, ty = 0, seen = false, hot = false;
   const SCROLL_CLOSE = .6, HH = Math.tan(17.5 * Math.PI / 180) * 7, heroEl = document.querySelector(".hero");
   try {
     R = new THREE.WebGLRenderer({ canvas: $("bg3d"), antialias: !LOW, alpha: true }); R.setPixelRatio(Math.min(devicePixelRatio, LOW ? 1.1 : 1.5)); R.autoClear = false;
     C = new THREE.PerspectiveCamera(35, 1, .1, 50); C.position.z = 7;
-    S1 = new THREE.Scene(); S1.environment = env(R, false); S3 = new THREE.Scene(); S3.environment = env(R, true);
+    S1 = new THREE.Scene(); S1.environment = env(R, false);
     F = makeFlower([[7, 1, 0, 1.35, 0], [6, .85, .45, 1.05, .12], [5, .62, .2, .7, .24]], 45, .3); F.fl.rotation.order = "YXZ"; S1.add(F.fl);
     po = pollen(LOW ? 14 : 26); po.m.uniforms.px.value = R.getPixelRatio(); S1.add(po.pts);
-    W = makeWaves(); S3.add(W.grp);
   } catch (e) { root.classList.add("nogl"); return; }
   /* two small canvases that sit ABOVE the page: the bottom-left sigil and the cursor star (no ribbon) */
   function overlay(canvas, fov, z, size, opt) {
@@ -213,15 +177,6 @@
 
     R.setScissorTest(false); R.clear(); R.setScissorTest(true);
     if (mo || (hr.bottom > 0 && hr.top < innerHeight)) view(vx, vy, vw, vh, S1);
-    /* waves: pinned to the About block (move with it), half speed, touched spots stay bent */
-    const wel = $("waves"), wr = wel && !mo ? wel.getBoundingClientRect() : null;
-    if (wr && wr.height > 40 && wr.bottom > 0 && wr.top < innerHeight) {
-      const vh2 = Math.min(wr.height, wr.width * 1.1), top2 = wr.top + (wr.height - vh2) / 2, hw2 = HH * wr.width / vh2;
-      const inside = seen && !RM && tx >= wr.left && tx <= wr.right && ty >= top2 && ty <= top2 + vh2; wv += ((inside ? 1 : 0) - wv) * .08;
-      const vis = Math.min(wr.bottom, innerHeight) - Math.max(wr.top, 0);
-      wavesStep(W, tt * .5, wv, ((tx - wr.left) / wr.width - .5) * 2 * hw2, -((ty - top2) / vh2 - .5) * 2 * HH, hw2, cl(vis / (innerHeight * .45)));
-      view(wr.left, innerHeight - top2 - vh2, wr.width, vh2, S3);
-    }
     R.setScissorTest(false);
 
     if (SG) { animSigil(SG.o, tt, mouse.x * .1); SG.o.grp.rotation.set(.22 + mouse.y * .2 + Math.sin(tt * .3) * .08, 0, 0); SG.R.render(SG.S, SG.C); }
