@@ -9,6 +9,7 @@ window.SITE = {
   social: {
     telegram:  "https://t.me/hello_evervie",
     instagram: "https://www.instagram.com/hello_evervie/",
+    pinterest: "",   // paste your Pinterest link here (e.g. https://www.pinterest.com/yourname/) — the icon appears only when it is filled
     github:    "https://github.com/evervie",
     x:         "https://x.com/hello_evervie",
   },
@@ -86,7 +87,7 @@ window.PROJECTS = [
       en: "A live, working website on Tilda — my first complete project and my diploma work.",
       ru: "Рабочий сайт на Tilda — мой первый законченный проект и дипломная работа."
     },
-cover: "assets/util/1.png",
+    cover: "assets/util/1.png",
     mock: { url: "utilizatsiyaothodov.tilda.ws" },
     link: "https://utilizatsiyaothodov.tilda.ws"
   },
@@ -115,7 +116,7 @@ cover: "assets/util/1.png",
     cover: "assets/homakoll/1-1.jpg",
     images: [
       { src: "assets/homakoll/1-label.jpg",       caption: { en: "Label", ru: "Этикетка" } },
-      { src: "assets/homakoll/2-mockup.jpg",      caption: { en: "Bucket mockup", ru: "Мокап ведра" } },
+      { src: "assets/homakoll/1-1.jpg",           caption: { en: "Bucket mockup", ru: "Мокап ведра" } },   /* 1-1.jpg is the high-res version of the mockup */
       { src: "assets/homakoll/3-banner.jpg",      caption: { en: "Promo banner", ru: "Промо-баннер" } },
       { src: "assets/homakoll/4-infographic.jpg", caption: { en: "Infographic card", ru: "Инфографика" } },
     ],

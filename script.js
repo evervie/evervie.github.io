@@ -11,11 +11,11 @@ const UI = {
   en: { nav_projects:"portfolio", nav_about:"about", nav_contact:"contact", h_projects:"selected <em>projects</em>", h_about:"about <span>me.</span>",
     sp_title:"special <em>cases</em>", sp_note:"Experimental work. This shelf keeps growing.", hello:"Hello! I’m",
     skills:"skills", tools:"tools", resume:"download resume", mail:"contact me", empty:"First projects are on the way.", touch:"Get in touch",
-    back:"← back to portfolio", visit:"Visit website", h_process:"my <span>process</span>", h_story:"my <span>story</span>", resume_soon:"PDF coming soon", task:"task", solution:"solution", site:"view website ↗", prev:"Previous project", next:"Next project", lang:"Switch language" },
+    back:"← back to portfolio", visit:"Visit website", mailhint:"100% chance I’ll read it :)", policy:"Privacy", pol_t:"Privacy policy", pol_close:"Close", pol_html:"<p>This site is a portfolio. There are no forms, no analytics and no advertising cookies.</p><ul><li>Your language choice is saved in your browser (localStorage) and is never sent anywhere.</li><li>To display the page, fonts from Google Fonts and the three.js library (cdnjs) are loaded. These services may see your IP address and browser data.</li><li>The site is hosted on GitHub Pages, which may keep technical visit logs under its own rules.</li><li>If you write to me by email or in a messenger, I use your message only to reply and never share it.</li><li>Links to other sites (Telegram, Instagram, Pinterest, GitHub, the EcoUtil website) lead to resources with their own policies.</li></ul><p>Questions? Just write to me.</p>", h_process:"my <span>process</span>", h_story:"my <span>story</span>", resume_soon:"PDF coming soon", task:"task", solution:"solution", site:"view website ↗", prev:"Previous project", next:"Next project", lang:"Switch language" },
   ru: { nav_projects:"портфолио", nav_about:"обо мне", nav_contact:"контакты", h_projects:"избранные <em>проекты</em>", h_about:"обо <span>мне.</span>",
     sp_title:"особые <em>кейсы</em>", sp_note:"Экспериментальные работы. Эта полка будет пополняться.", hello:"Привет! Я",
     skills:"навыки", tools:"инструменты", resume:"скачать резюме", mail:"связаться со мной", empty:"Первые проекты скоро появятся.", touch:"Написать мне",
-    back:"← к портфолио", visit:"Перейти на сайт", h_process:"мой <span>процесс</span>", h_story:"моя <span>история</span>", resume_soon:"PDF скоро появится", task:"задача", solution:"решение", site:"открыть сайт ↗", prev:"Предыдущий проект", next:"Следующий проект", lang:"Сменить язык" }
+    back:"← к портфолио", visit:"Перейти на сайт", mailhint:"100% шанс, что я прочитаю :)", policy:"Политика", pol_t:"Политика конфиденциальности", pol_close:"Закрыть", pol_html:"<p>Этот сайт — портфолио. На нём нет форм, аналитики и рекламных cookies.</p><ul><li>Выбранный язык интерфейса сохраняется в вашем браузере (localStorage) и никуда не отправляется.</li><li>Для отображения страницы загружаются шрифты Google Fonts и библиотека three.js (cdnjs). Эти сервисы могут видеть ваш IP-адрес и данные браузера.</li><li>Сайт размещён на GitHub Pages, который может вести технические журналы посещений по своим правилам.</li><li>Если вы пишете мне на почту или в мессенджер, я использую сообщение только для ответа и никому не передаю.</li><li>Ссылки на другие сайты (Telegram, Instagram, Pinterest, GitHub, сайт ЭкоУтиль) ведут на ресурсы со своими политиками.</li></ul><p>Есть вопросы — просто напишите мне.</p>", h_process:"мой <span>процесс</span>", h_story:"моя <span>история</span>", resume_soon:"PDF скоро появится", task:"задача", solution:"решение", site:"открыть сайт ↗", prev:"Предыдущий проект", next:"Следующий проект", lang:"Сменить язык" }
 };
 const UI2 = {
   en: { h_projects:"portfolio", p_eyebrow:"selected projects", p_sub:"my design & experience", hm1:"<b>2</b> complete projects in the portfolio", hm2:"<b>5</b> years in digital design", hbtn:"My work", f_all:"All projects", f_special:"Special cases", sp_big:"Special cases", sp_desc:"Experimental projects and unique concepts.", explore:"Explore", soon:"coming soon", scroll:"scroll to explore", made:"designed & built by me", pf:"Portfolio", pf1:"PORT", pf2:"folio", hi1:"Hello!", hi2:"I’m", role:"role", insight:"insight", results:"results" },
@@ -45,13 +45,14 @@ const IC = {
   github: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>',
   telegram: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
   instagram: '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>',
+  pinterest: '<circle cx="12" cy="12" r="10"/><path d="M9.2 20.6l2.2-9.1"/><path d="M8.6 12.4c-.7-2.9 1.2-5.3 4.1-5.3 2.4 0 3.9 1.6 3.9 3.7 0 2.7-1.5 4.5-3.5 4.5-.9 0-1.7-.5-2-1.2"/>',
   x: '<path d="M3 3h5.2l12.8 18h-5.2z"/><path d="M20.4 3.4 13.3 10.9M10.7 13.1 3.6 20.6"/>',
   email: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>'
 };
 const link = k => k === "email" ? "mailto:" + S.email : S.social[k];
-const icons = (keys, mag) => keys.filter(link).map(k => `<a class="ico${mag ? " mag" : ""}" href="${esc(link(k))}"${k === "email" ? "" : ' target="_blank" rel="noopener"'} aria-label="${k[0].toUpperCase() + k.slice(1)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg></a>`).join("");
+const icons = (keys, mag) => keys.filter(link).map(k => `<a class="ico${mag ? " mag" : ""}${k === "email" ? " mail" : ""}" href="${esc(link(k))}"${k === "email" ? "" : ' target="_blank" rel="noopener"'} aria-label="${k[0].toUpperCase() + k.slice(1)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>${k === "email" ? '<span class="mh" data-i="mailhint"></span>' : ""}</a>`).join("");
 $("#topSoc").innerHTML = icons(["github", "telegram"]);
-$("#socIcons").innerHTML = icons(["telegram", "instagram", "github", "x", "email"], true);
+$("#socIcons").innerHTML = icons(["telegram", "instagram", "pinterest", "github", "x", "email"], true);
 
 /* ---- projects: classic card grid + filter by tag ---- */
 const PO = P.filter(p => !p.soon);
@@ -137,7 +138,8 @@ function applyLang(l) {
   if (href) { r.href = href; r.setAttribute("download", ""); r.removeAttribute("aria-disabled"); } else { r.removeAttribute("href"); r.removeAttribute("download"); r.setAttribute("aria-disabled", "true"); }
   $("#steps").innerHTML = (t.process || []).map((x, i) => `<li><span class="sn">${pad(i + 1)}</span><div><b>${esc(x.t)}</b><p>${esc(x.d)}</p></div></li>`).join("");
   $("#story").innerHTML = (t.story || []).map(x => `<li><time>${esc(x.y)}</time><p>${esc(x.t)}</p></li>`).join("");
-  $("#foot").innerHTML = `<span>© 2026 ${esc(S.name)}</span><i></i><span>${u.made}</span>`;
+  $("#foot").innerHTML = `<span class="fl">© 2026 ${esc(S.name)} <em>Creative Coder</em></span><i></i><a class="made" href="https://github.com/evervie" target="_blank" rel="noopener">${u.made}</a><i></i><button class="pol-link" type="button">${u.policy}</button>`;
+  $("#polT").textContent = u.pol_t; $("#polBody").innerHTML = u.pol_html; $("#polX").setAttribute("aria-label", u.pol_close);
   const m = $("#mail"); m.href = lang === "ru" ? S.social.telegram : S.social.instagram; m.target = "_blank"; m.rel = "noopener";
   document.title = `${S.name} — ${t.role}`;
   renderGrid(); if (!modal.hidden) openProject(cur);
@@ -194,3 +196,12 @@ addEventListener("scroll", onScroll, { passive: true }); onScroll();
 applyLang(lang);
 
 $("#resume").addEventListener("click", e => { if (e.currentTarget.getAttribute("aria-disabled") === "true") e.preventDefault(); });
+
+/* ---- privacy policy: small glass dialog ---- */
+const pol = $("#pol"); let polFocus;
+function openPol() { polFocus = document.activeElement; pol.hidden = false; requestAnimationFrame(() => pol.classList.add("open")); $("#polX").focus(); }
+function closePol() { pol.classList.remove("open"); setTimeout(() => { pol.hidden = true; polFocus?.focus(); }, 350); }
+$("#foot").addEventListener("click", e => { if (e.target.closest(".pol-link")) openPol(); });
+$("#polX").onclick = closePol;
+pol.addEventListener("click", e => { if (e.target === pol) closePol(); });
+addEventListener("keydown", e => { if (e.key === "Escape" && !pol.hidden) closePol(); });
