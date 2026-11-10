@@ -110,7 +110,7 @@
     const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: radial("rgba(200,180,255,.95)", "rgba(200,180,255,0)"), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true })); glow.scale.setScalar(1.7); core.add(glow);
     if (opt.ribbon) ribG.add(mk(ribbonGeo(), .32, 1.5, .2));
     const sp = starGeo(4, .27, .05, 0, .05);
-    [[-1.3, .95], [1.4, 1], [-1.35, -.9], [1.25, -1.15]].forEach(([x, y], i) => { const m = new THREE.Mesh(sp, new THREE.MeshBasicMaterial({ color: 0xe9e2ff })); m.position.set(x, y, i % 2 ? .3 : -.3); spk.add(m); });
+    if (opt.sparkles !== false) [[-1.3, .95], [1.4, 1], [-1.35, -.9], [1.25, -1.15]].forEach(([x, y], i) => { const m = new THREE.Mesh(sp, new THREE.MeshBasicMaterial({ color: 0xe9e2ff })); m.position.set(x, y, i % 2 ? .3 : -.3); spk.add(m); });
     grp.add(core, ribG, spk); grp.scale.setScalar(opt.scale); return { grp, core, ribG, spk, glow, ims };
   }
   function animSigil(o, tt, shift, calm) {
@@ -139,7 +139,7 @@
   }
   const miniEl = $("mini"), csz = () => innerWidth < 700 ? 96 : 150;
   try { SG = overlay($("sigil"), 35, 7, csz(), { ribbon: true, scale: .82 }); } catch (e) { SG = null; }
-  if (!touch && !RM) try { ST = overlay(miniEl, 30, 6, 150, { ribbon: false, scale: .5 }); } catch (e) { ST = null; }
+  if (!touch && !RM) try { ST = overlay(miniEl, 30, 6, 150, { ribbon: false, sparkles: false, scale: .5 }); } catch (e) { ST = null; }   /* cursor star: no little sparkles around it */
   let fx0 = 0, fy0 = 0, fs0 = 1;
   function layout(w, h) { const asp = w / h; if (asp < .85) { fs0 = .7; fx0 = 0; fy0 = 1.1; } else { fs0 = cl(asp / 1.55, .65, 1.2); fx0 = Math.max(0, HH * asp - 1.8 * fs0); fy0 = 0; } }
   function size() { R.setSize(innerWidth, innerHeight, false); if (SG) SG.R.setSize(csz(), csz(), false); }
@@ -151,7 +151,7 @@
     mouse.x = e.clientX / innerWidth * 2 - 1; mouse.y = e.clientY / innerHeight * 2 - 1; tx = e.clientX; ty = e.clientY;
     if (!seen) { seen = true; px = tx; py = ty; } if (ST) miniEl.style.opacity = 1;
     if (lx !== null) speed = Math.max(speed, Math.hypot(tx - lx, ty - ly)); lx = tx; ly = ty;
-    hot = !!(e.target.closest && e.target.closest("a,button,.bc,input,textarea"));
+    hot = !!(e.target.closest && e.target.closest("a,button,.card,input,textarea"));
   });
   root.addEventListener("mouseleave", () => { if (ST) miniEl.style.opacity = 0; lx = null; });
   addEventListener("blur", () => { if (ST) miniEl.style.opacity = 0; });

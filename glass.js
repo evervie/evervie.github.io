@@ -101,13 +101,13 @@
         const lh = el.offsetHeight, base = pad + el.offsetTop + (lh - (A + D)) / 2 + A;
         x.fillText(el.textContent, pad + el.offsetLeft, base);
       };
-      draw(l1, `200 ${f1}px "Inter Tight", sans-serif`, f1, -.02 * f1);
-      draw(l2, `italic 300 ${f2}px "Cormorant Garamond", serif`, f2, 0);
+      draw(l1, `200 ${f1}px "Jost", "Inter Tight", sans-serif`, f1, .01 * f1);
+      draw(l2, `italic 400 ${f2}px "Playfair Display", "Cormorant Garamond", serif`, f2, 0);
       tex.needsUpdate = true;
       U.px.value.set(1 / mask.width, 1 / mask.height); U.R.value = Math.max(3, f1 * .026 * dpr);
       ok = true; root.classList.add("gl-ok");
     };
-    const relayout = () => { if (document.fonts) Promise.all([document.fonts.load('200 100px "Inter Tight"', "PORT ПОРТ"), document.fonts.load('italic 300 100px "Cormorant Garamond"', "folio фолио")]).then(layout, layout); else layout(); };
+    const relayout = () => { if (document.fonts) Promise.all([document.fonts.load('200 100px "Jost"', "PORT"), document.fonts.load('italic 400 100px "Playfair Display"', "folio.")]).then(layout, layout); else layout(); };
     relayout(); addEventListener("resize", relayout); addEventListener("pflayout", relayout);
     if (document.fonts) document.fonts.ready.then(layout);
     new IntersectionObserver(es => { vis = es[0].isIntersecting; }).observe(hero);
@@ -123,9 +123,9 @@
     });
   } catch (e) { /* DOM letters stay visible as a fallback */ }
 
-  /* ================= 3) crystal tulips ================= */
+  /* ================= 3) crystal tulips (contact block + project page) ================= */
+  function garden(cv, sec, modal) {
   try {
-    const cv = $("garden"), sec = $("contact");
     const R = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: !LOW });
     R.setPixelRatio(Math.min(DPR, 1.6));
     const Z = 10, C = new THREE.PerspectiveCamera(30, 1, .1, 60); C.position.z = Z;
@@ -169,7 +169,7 @@
       return l;
     }
     /* [x (−1..1 of half width), head height (0..1 of canvas), size, lean, phase, hue] */
-    const SPEC = [[-.78, .72, 1.5, .1, 0, 0], [.8, .74, 1.3, -.09, 1.6, .25], [-.3, .5, .85, .05, 3.1, .5], [.22, .58, .8, -.04, 4.4, .75], [-.55, .28, .5, .08, 2.2, .1], [.55, .33, .55, -.07, 5.2, .4], [.02, .24, .42, .02, .7, .6], [.96, .42, .62, -.12, 3.7, .9], [-.1, .38, .55, .05, 1.1, .3], [-.97, .38, .6, .1, 5.9, .65]].slice(0, LOW ? 6 : 10);
+    const SPEC = [[-.78, .72, 1.5, .1, 0, 0], [.8, .74, 1.3, -.09, 1.6, .25], [-.3, .5, .85, .05, 3.1, .5], [.22, .58, .8, -.04, 4.4, .75], [-.55, .28, .5, .08, 2.2, .1], [.55, .33, .55, -.07, 5.2, .4], [.02, .24, .42, .02, .7, .6], [.96, .42, .62, -.12, 3.7, .9], [-.1, .38, .55, .05, 1.1, .3], [-.97, .38, .6, .1, 5.9, .65]].slice(0, modal ? (LOW ? 5 : 7) : (LOW ? 6 : 10));
     const T = SPEC.map(sp => ({ sp, pivot: new THREE.Group(), head: new THREE.Group(), mats: [], S: 3 }));
     T.forEach(o => {
       const [, , size, lean, , hue] = o.sp, hm = smat(hue, 1), sm = smat(hue + .2, 0); o.mats.push(hm, sm);
@@ -180,8 +180,8 @@
     });
     let HW = 4, HH = 2.7;
     const place = () => {
-      const w = sec.clientWidth, h = Math.round(Math.min(innerHeight * .72, 660)), asp = w / h;
-      cv.style.cssText = `position:absolute;left:0;bottom:0;width:100%;height:${h}px;pointer-events:none;z-index:0`;
+      const w = modal ? innerWidth : sec.clientWidth; if (!w) return; const h = Math.round(modal ? Math.min(innerHeight * .5, 460) : Math.min(innerHeight * .72, 660)), asp = w / h;
+      cv.style.height = h + "px";
       R.setSize(w, h, false); C.aspect = asp; C.updateProjectionMatrix();
       HH = Math.tan(15 * Math.PI / 180) * Z; HW = HH * asp;
       const sc = cl(asp / 1.7, .55, 1.15);
@@ -196,7 +196,7 @@
       });
     };
     place(); addEventListener("resize", place);
-    let vis = false; new IntersectionObserver(es => { vis = es[0].isIntersecting; }, { rootMargin: "100px" }).observe(sec);
+    let vis = false; if (!modal) new IntersectionObserver(es => { vis = es[0].isIntersecting; }, { rootMargin: "100px" }).observe(sec);
     /* wind: gentle always, stronger when the pointer moves over the flowers */
     let energy = 0, dirx = 0, lpx = null;
     addEventListener("pointermove", e => {
@@ -205,6 +205,7 @@
     });
     const t0 = performance.now(); let wd = 0;
     loops.push(function (now) {
+      if (modal) { const on = root.classList.contains("modal-open"); if (on && !vis) place(); vis = on; }
       if (!vis) return;
       const t = RM ? 0 : (now - t0) / 1000; energy *= .985; wd += (dirx * energy - wd) * .05;
       const gust = Math.max(0, Math.sin(t * .23) * Math.sin(t * .57 + 1));
@@ -217,5 +218,8 @@
       });
       R.render(S, C);
     });
-  } catch (e) { const g = $("garden"); if (g) g.style.display = "none"; }
+  } catch (e) { cv.style.display = "none"; }
+  }
+  garden($("garden"), $("contact"), false);
+  garden($("gardenM"), $("modal"), true);
 })();

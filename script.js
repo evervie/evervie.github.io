@@ -8,18 +8,18 @@ window.READY = 0;   // set when the welcome screen ends; the 3D flower starts op
 
 /* ---- interface texts (edit freely) ---- */
 const UI = {
-  en: { nav_projects:"projects", nav_about:"about", nav_contact:"contact", h_projects:"selected <em>projects</em>", h_about:"about <span>me.</span>",
+  en: { nav_projects:"portfolio", nav_about:"about", nav_contact:"contact", h_projects:"selected <em>projects</em>", h_about:"about <span>me.</span>",
     sp_title:"special <em>cases</em>", sp_note:"Experimental work. This shelf keeps growing.", hello:"Hello! I’m",
     skills:"skills", tools:"tools", resume:"download resume", mail:"contact me", empty:"First projects are on the way.", touch:"Get in touch",
-    back:"← back to projects", task:"task", solution:"solution", site:"view website ↗", prev:"Previous project", next:"Next project", lang:"Switch language" },
-  ru: { nav_projects:"проекты", nav_about:"обо мне", nav_contact:"контакты", h_projects:"избранные <em>проекты</em>", h_about:"обо <span>мне.</span>",
+    back:"← back to portfolio", visit:"Visit website", h_process:"my <span>process</span>", h_story:"my <span>story</span>", resume_soon:"PDF coming soon", task:"task", solution:"solution", site:"view website ↗", prev:"Previous project", next:"Next project", lang:"Switch language" },
+  ru: { nav_projects:"портфолио", nav_about:"обо мне", nav_contact:"контакты", h_projects:"избранные <em>проекты</em>", h_about:"обо <span>мне.</span>",
     sp_title:"особые <em>кейсы</em>", sp_note:"Экспериментальные работы. Эта полка будет пополняться.", hello:"Привет! Я",
     skills:"навыки", tools:"инструменты", resume:"скачать резюме", mail:"связаться со мной", empty:"Первые проекты скоро появятся.", touch:"Написать мне",
-    back:"← к проектам", task:"задача", solution:"решение", site:"открыть сайт ↗", prev:"Предыдущий проект", next:"Следующий проект", lang:"Сменить язык" }
+    back:"← к портфолио", visit:"Перейти на сайт", h_process:"мой <span>процесс</span>", h_story:"моя <span>история</span>", resume_soon:"PDF скоро появится", task:"задача", solution:"решение", site:"открыть сайт ↗", prev:"Предыдущий проект", next:"Следующий проект", lang:"Сменить язык" }
 };
 const UI2 = {
-  en: { h_projects:"projects", p_eyebrow:"selected works", p_sub:"ideas · design · experience", f_all:"All projects", f_special:"Special cases", sp_big:"Special cases", sp_desc:"Experimental projects and unique concepts.", explore:"Explore", soon:"coming soon", scroll:"scroll to explore", made:"designed & built by me", pf:"Portfolio", pf1:"PORT", pf2:"folio", hi1:"Hello!", hi2:"I’m", role:"role", insight:"insight", results:"results" },
-  ru: { h_projects:"проекты", p_eyebrow:"избранные работы", p_sub:"идеи · дизайн · опыт", f_all:"Все проекты", f_special:"Особые кейсы", sp_big:"Особые кейсы", sp_desc:"Экспериментальные проекты и уникальные концепции.", explore:"Смотреть", soon:"скоро", scroll:"листайте вниз", made:"создано и разработано мной", pf:"Портфолио", pf1:"ПОРТ", pf2:"фолио", hi1:"Привет!", hi2:"Я", role:"роль", insight:"инсайт", results:"результат" }
+  en: { h_projects:"portfolio", p_eyebrow:"selected projects", p_sub:"my design & experience", hm1:"<b>2</b> complete projects in the portfolio", hm2:"<b>5</b> years in digital design", hbtn:"My work", f_all:"All projects", f_special:"Special cases", sp_big:"Special cases", sp_desc:"Experimental projects and unique concepts.", explore:"Explore", soon:"coming soon", scroll:"scroll to explore", made:"designed & built by me", pf:"Portfolio", pf1:"PORT", pf2:"folio", hi1:"Hello!", hi2:"I’m", role:"role", insight:"insight", results:"results" },
+  ru: { h_projects:"портфолио", p_eyebrow:"избранные проекты", p_sub:"мой дизайн и опыт", hm1:"<b>2</b> полноценные работы в портфолио", hm2:"<b>5</b> лет в digital-дизайне", hbtn:"Мои работы", f_all:"Все проекты", f_special:"Особые кейсы", sp_big:"Особые кейсы", sp_desc:"Экспериментальные проекты и уникальные концепции.", explore:"Смотреть", soon:"скоро", scroll:"листайте вниз", made:"создано и разработано мной", pf:"Portfolio", pf1:"PORT", pf2:"folio", hi1:"Привет!", hi2:"Я", role:"роль", insight:"инсайт", results:"результат" }
 };
 Object.keys(UI2).forEach(l => Object.assign(UI[l], UI2[l]));
 let lang; try { lang = localStorage.getItem("lang"); } catch (e) {}
@@ -57,18 +57,16 @@ $("#socIcons").innerHTML = icons(["telegram", "instagram", "github", "x", "email
 const PO = P.filter(p => !p.soon);
 const tkey = t => String(typeof t === "object" ? t.en : t).toLowerCase();
 let flt = "all";
-const FILTER_TAGS = ["ux/ui design", "web design"];   /* only these tags become filter buttons */
-function filters() {
-  const seen = new Map(); P.forEach(p => (p.tags || []).forEach(t => { const k = tkey(t); if (FILTER_TAGS.includes(k) && !seen.has(k)) seen.set(k, t); }));
-  return [{ k: "all", l: UI[lang].f_all }, ...FILTER_TAGS.filter(k => seen.has(k)).map(k => ({ k, l: tr(seen.get(k)) }))];
-}
+const FL = window.FILTERS || [];
+const filters = () => [{ k: "all", l: UI[lang].f_all }, ...FL.map(f => ({ k: f.k, l: tr(f.l) }))];
+let fOpen = false;
 const tagsHTML = p => (p.tags || []).length ? `<ul class="tags">${p.tags.slice(0, 3).map(t => `<li>${esc(tr(t))}</li>`).join("")}</ul>` : "";
-const mockHTML = (p, lg) => { const m = p.mock; return `<div class="mock${lg ? " lg" : ""}"><div class="mk-bar"><i></i><i></i><i></i><span>${esc(m.url)}</span></div><div class="mk-body"><div class="mk-nav"><b>${esc(m.name)}</b><span></span><span></span><span></span></div><h4>${esc(tr(m.head))}</h4><div class="mk-st">${m.stats.map(x => `<span>${esc(x)}</span>`).join("")}</div></div></div>`; };
+const mockHTML = (p, lg) => { const m = p.mock; return `<div class="mock${lg ? " lg" : ""}"><div class="mk-bar"><i></i><i></i><i></i><span>${esc(m.url)}</span></div><div class="mk-body"><b class="mk-name">${esc(m.name)}</b></div></div>`; };
 function renderGrid() {
-  const u = UI[lang], L = P.filter(p => flt === "all" || (p.tags || []).some(t => tkey(t) === flt));
-  const fl = filters(); if (!fl.find(f => f.k === flt)) flt = "all";
-  $("#filters").hidden = fl.length < 3;
-  $("#filters").innerHTML = fl.map(f => `<button class="fp${f.k === flt ? " on" : ""}" data-f="${esc(f.k)}">${esc(f.l)}</button>`).join("");
+  const u = UI[lang], fl = filters(); if (!fl.find(f => f.k === flt)) flt = "all";
+  const L = P.filter(p => flt === "all" || (p.cats || []).includes(flt));
+  $("#filters").hidden = fl.length < 2;
+  $("#filters").innerHTML = `<button class="burger" aria-haspopup="true" aria-expanded="${fOpen}" aria-label="${lang === "ru" ? "Категории" : "Categories"}"><span class="bl"><i></i><i></i><i></i></span><span>${esc(fl.find(f => f.k === flt).l)}</span></button><div class="fmenu"${fOpen ? "" : " hidden"}>${fl.map(f => `<button class="fp${f.k === flt ? " on" : ""}" data-f="${esc(f.k)}">${esc(f.l)}</button>`).join("")}</div>`;
   $("#grid").innerHTML = L.map((p, i) => {
     const n = pad(i + 1), meta = [tr(p.type), p.year].filter(Boolean).join(" · "), o = PO.indexOf(p);
     const tag = p.soon ? "div" : "a", attr = p.soon ? "" : ` href="#project-${o + 1}" data-o="${o}"`;
@@ -76,7 +74,14 @@ function renderGrid() {
   }).join("");
   rv();
 }
-$("#filters").addEventListener("click", e => { const b = e.target.closest("[data-f]"); if (b) { flt = b.dataset.f; renderGrid(); } });
+$("#filters").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.classList.contains("burger")) { fOpen = !fOpen; b.setAttribute("aria-expanded", fOpen); $(".fmenu").hidden = !fOpen; }
+  else if (b.dataset.f) { flt = b.dataset.f; fOpen = false; renderGrid(); }
+});
+const closeMenu = () => { if (!fOpen) return; fOpen = false; const m = $(".fmenu"); if (m) m.hidden = true; const b = $(".burger"); if (b) b.setAttribute("aria-expanded", "false"); };
+document.addEventListener("click", e => { if (!e.target.closest("#filters")) closeMenu(); });
+addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
 $("#grid").addEventListener("click", e => { const c = e.target.closest(".card"); if (!c) return; e.preventDefault(); if (c.dataset.o) openProject(+c.dataset.o); });
 
 /* ---- project view ---- */
@@ -92,11 +97,11 @@ function openProject(i) {
       ${p.badge ? `<p class="badge-in">${esc(tr(p.badge))}</p>` : ""}${tagsHTML(p)}${sec("task", p.task)}${sec("insight", p.insight)}${sec("solution", p.solution)}${sec("results", p.results)}</div>
     <div class="m-gallery">
       <div class="m-main">${imgs[0] ? `<img id="mMain" src="${esc(imgs[0].src)}" alt="${esc(tr(imgs[0].caption))}">` : p.mock ? mockHTML(p, true) : `<div class="ph"></div>`}</div>
+      ${p.link ? `<a class="btn m-visit" href="${esc(p.link)}" target="_blank" rel="noopener"><span>${u.visit}</span><i aria-hidden="true">↗</i></a>` : ""}
       <p class="cap" id="mCap">${esc(tr(imgs[0]?.caption))}</p>
       ${imgs.length > 1 ? `<div class="m-thumbs">${imgs.map((x, n) => `<button class="${n ? "" : "on"}" data-n="${n}" aria-label="${n + 1} / ${imgs.length}"><img src="${esc(x.src)}" alt=""></button>`).join("")}</div>` : ""}
     </div>`;
   $("#mCount").textContent = `${pad(cur + 1)} / ${pad(PO.length)}`;
-  const l = $("#mLink"); l.hidden = !p.link; if (p.link) l.href = p.link;
   if (modal.hidden) { root.classList.add("modal-open"); lastFocus = document.activeElement; modal.hidden = false; requestAnimationFrame(() => modal.classList.add("open")); document.body.style.overflow = "hidden"; $("#mBack").focus(); }
   else { body.classList.remove("swap"); void body.offsetWidth; body.classList.add("swap"); }
 }
@@ -124,10 +129,14 @@ function applyLang(l) {
   $("#lang").setAttribute("aria-label", u.lang); $("#mPrev").setAttribute("aria-label", u.prev); $("#mNext").setAttribute("aria-label", u.next);
   $("#pfEn").innerHTML = `<span class="l1">${u.pf1}</span><span class="l2">${u.pf2}.</span>`; dispatchEvent(new Event("pflayout")); $("h1.pf").setAttribute("aria-label", u.pf);
   $("#role").textContent = t.role;
-  $("#aboutText").textContent = t.about; $("#cta").textContent = t.cta;
+  $("#cta").textContent = t.cta;
   $("#spHello").innerHTML = `${u.hi1}<br>${u.hi2} ${esc(S.name)}.`;
   $("#skills").innerHTML = t.skills.map(s => `<li>${esc(s)}</li>`).join("");
-  const r = $("#resume"), href = tr(S.resume); r.hidden = !href; if (href) { r.href = href; r.setAttribute("download", ""); }
+  const r = $("#resume"), href = tr(S.resume);
+  r.classList.toggle("off", !href); $("#resumeNote").textContent = href ? "" : u.resume_soon;
+  if (href) { r.href = href; r.setAttribute("download", ""); r.removeAttribute("aria-disabled"); } else { r.removeAttribute("href"); r.removeAttribute("download"); r.setAttribute("aria-disabled", "true"); }
+  $("#steps").innerHTML = (t.process || []).map((x, i) => `<li><span class="sn">${pad(i + 1)}</span><div><b>${esc(x.t)}</b><p>${esc(x.d)}</p></div></li>`).join("");
+  $("#story").innerHTML = (t.story || []).map(x => `<li><time>${esc(x.y)}</time><p>${esc(x.t)}</p></li>`).join("");
   $("#foot").innerHTML = `<span>© 2026 ${esc(S.name)}</span><i></i><span>${u.made}</span>`;
   const m = $("#mail"); m.href = lang === "ru" ? S.social.telegram : S.social.instagram; m.target = "_blank"; m.rel = "noopener";
   document.title = `${S.name} — ${t.role}`;
@@ -143,7 +152,9 @@ function endSplash() {
   splash.classList.add("gone"); if (modal.hidden) document.body.style.overflow = "";
   setTimeout(() => { root.classList.add("ready"); window.READY = performance.now(); }, RM ? 0 : 600);
 }
-setTimeout(endSplash, RM ? 300 : 4000); splash.addEventListener("click", endSplash);
+const showSplash = () => splash.classList.add("go");
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(showSplash); setTimeout(showSplash, 1500);
+setTimeout(endSplash, RM ? 300 : 4800); splash.addEventListener("click", endSplash);
 
 /* ---- soft magnetic buttons + glass glare (desktop only) ---- */
 let lit = null;
@@ -181,3 +192,5 @@ const pfEl = $("h1.pf");
 const onScroll = () => { root.classList.toggle("scrolled", scrollY > 30); pfEl.style.setProperty("--s", Math.min(1, scrollY / (innerHeight * .6)).toFixed(3)); root.style.setProperty("--bs", Math.min(1, scrollY / (innerHeight * .3)).toFixed(3)); };
 addEventListener("scroll", onScroll, { passive: true }); onScroll();
 applyLang(lang);
+
+$("#resume").addEventListener("click", e => { if (e.currentTarget.getAttribute("aria-disabled") === "true") e.preventDefault(); });

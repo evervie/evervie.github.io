@@ -17,6 +17,11 @@ One list: `window.PROJECTS` in `projects.js` (a full template with all fields is
 - Projects are in `projects.js`: each has `tags` (3 shown on the card, they become filters), `badge`, `cover`, `images`. Pictures live in `assets/`.
 - First project has no screenshots yet: add them to `assets/utilization/` and set `cover` + `images` (a drawn browser window is shown until then).
 
+## About / resume / project page (v15)
+- Resume: put the PDF in `assets/resume/` and set `resume: "assets/resume/resume.pdf"` in `projects.js` — until then the button is shown disabled with "PDF coming soon".
+- "My process" and "My story" texts live in `SITE.text.en/ru` (`process`, `story`) in `projects.js`.
+- Tulips also grow behind the project page (canvas `#gardenM`, dimmed, behind pictures and text). The "visit website" button shows under the preview whenever a project has `link`.
+
 ## Notes
 - The site is black only (no light theme). Weak devices (≤4 CPU cores / narrow screens) get fewer particles and a lighter wave mesh. "Reduce motion" turns off the spinning, pollen, waves motion and the cursor flower.
 - Cursor flower is desktop only.

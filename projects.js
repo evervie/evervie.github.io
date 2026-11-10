@@ -4,7 +4,7 @@ window.SITE = {
   name: "evervie",
   photo: "",                             // e.g. "assets/me.jpg" — leave empty for a placeholder
   tools: ["Figma", "Ps", "Ai", "Tilda"],
-  resume: "",                            // "assets/resume.pdf" or { en: "...", ru: "..." } — button hides if empty
+  resume: "",                            // later: "assets/resume/resume.pdf" or { en: "...", ru: "..." } — until then the button is shown disabled
   email: "design.eivie@gmail.com",
   social: {
     telegram:  "https://t.me/hello_evervie",
@@ -16,14 +16,36 @@ window.SITE = {
     en: {
       role: "graphic & digital designer",
       intro: "I'm a graphic and digital designer who turns ideas into visual solutions.",
-      about: "Write a few sentences about yourself here.",
+      process: [
+        { t: "Briefing", d: "I learn the task, the goals and the expectations." },
+        { t: "Research & analysis", d: "I study the audience, the market and competitors." },
+        { t: "Visual concept", d: "I collect references, sketch ideas and choose a direction." },
+        { t: "Design development", d: "I turn the concept into layouts and precise details." },
+        { t: "Refinement & delivery", d: "I polish the result and prepare the final files." },
+      ],
+      story: [
+        { y: "2011", t: "First conscious passion for creativity." },
+        { y: "2020", t: "Graduated from art school with honours (red diploma)." },
+        { y: "2025", t: "First professional design projects." },
+      ],
       skills: ["Branding", "Graphic Design", "Web Design", "Packaging"],
       cta: "let's create something together.",
     },
     ru: {
       role: "графический и digital-дизайнер",
       intro: "Я графический и digital-дизайнер: превращаю идеи в визуальные решения.",
-      about: "Напишите здесь несколько предложений о себе.",
+      process: [
+        { t: "Брифинг", d: "Знакомлюсь с задачей, целями и ожиданиями." },
+        { t: "Исследование и анализ", d: "Изучаю аудиторию, рынок и конкурентов." },
+        { t: "Поиск визуальной концепции", d: "Собираю референсы, набрасываю идеи и выбираю направление." },
+        { t: "Разработка дизайна", d: "Превращаю концепцию в макеты и точные детали." },
+        { t: "Доработка и подготовка результата", d: "Довожу до идеала и готовлю финальные файлы." },
+      ],
+      story: [
+        { y: "2011", t: "Впервые начала осознанно увлекаться творчеством." },
+        { y: "2020", t: "Закончила школу искусств с красным дипломом." },
+        { y: "2025", t: "Первые профессиональные разработки в дизайне." },
+      ],
       skills: ["Брендинг", "Графический дизайн", "Веб-дизайн", "Дизайн упаковки"],
       cta: "давайте создадим что-нибудь вместе.",
     },
@@ -36,11 +58,17 @@ window.SITE = {
    cover: card picture.  images: gallery inside the project.  mock: a drawn browser window (used while there are no screenshots).
    badge: small label on the card.  year: optional — add it when you want it shown.
    Real screenshots of the website: put them in assets/utilization/ and list them in "cover" + "images" of the first project. */
+/* Filter menu (burger in the projects block). Each project lists the categories it belongs to in "cats". */
+window.FILTERS = [
+  { k: "ux",     l: { en: "UX/UI design", ru: "UX/UI дизайн" } },
+  { k: "design", l: { en: "Design",       ru: "Дизайн" } },
+];
 window.PROJECTS = [
   {
     title: { en: "EcoUtil — recycling website", ru: "ЭкоУтиль — сайт по утилизации отходов" },
     type:  { en: "Website for a company", ru: "Сайт компании" },
     badge: { en: "My first project · diploma", ru: "Мой первый проект · диплом" },
+    cats:  ["ux", "design"],
     tags:  ["Tilda", { en: "UX/UI design", ru: "UX/UI дизайн" }, { en: "Web design", ru: "Веб-дизайн" }],
     description: {
       en: "A corporate website for a waste-recycling company. This is the very first website I made — and the work I defended my diploma with at my educational institution.",
@@ -58,13 +86,14 @@ window.PROJECTS = [
       en: "A live, working website on Tilda — my first complete project and my diploma work.",
       ru: "Рабочий сайт на Tilda — мой первый законченный проект и дипломная работа."
     },
-    mock: { url: "utilizatsiyaothodov.tilda.ws", name: "ЭкоУтиль", head: { en: "A greener future is our standard", ru: "Экологичное будущее — наш стандарт утилизации" }, stats: ["10", "2000+", "20+"] },
+    mock: { url: "utilizatsiyaothodov.tilda.ws", name: "ЭкоУтиль" },
     link: "https://utilizatsiyaothodov.tilda.ws"
   },
   {
     title: "homakoll elastic",
     type:  { en: "Label design", ru: "Дизайн этикетки" },
     badge: { en: "Test assignment", ru: "Тестовое задание" },
+    cats:  ["design"],
     tags:  ["Figma", "Illustrator", { en: "Packaging design", ru: "Дизайн упаковки" }],
     description: {
       en: "A label for HOMA's ready-to-use acrylic tile adhesive (3.5 kg bucket) — a test assignment from an employer. I carried it further: a bucket mockup, a promo banner and an infographic card in one style.",

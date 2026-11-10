@@ -1,0 +1,4 @@
+Put your resume here, e.g. assets/resume/resume.pdf
+Then in projects.js set:  resume: "assets/resume/resume.pdf"
+(or per language: resume: { en: "assets/resume/resume-en.pdf", ru: "assets/resume/resume-ru.pdf" })
+Until then the "download resume" button stays visibly disabled.
