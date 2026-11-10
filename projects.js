@@ -86,7 +86,7 @@ window.PROJECTS = [
       en: "A live, working website on Tilda — my first complete project and my diploma work.",
       ru: "Рабочий сайт на Tilda — мой первый законченный проект и дипломная работа."
     },
-cover: "assets/util/1.jpg",
+cover: "assets/util/1.png",
     mock: { url: "utilizatsiyaothodov.tilda.ws" },
     link: "https://utilizatsiyaothodov.tilda.ws"
   },
@@ -112,7 +112,7 @@ cover: "assets/util/1.jpg",
       en: "Label, 3D bucket mockup, promo banner and infographic card.",
       ru: "Этикетка, 3D-мокап ведра, промо-баннер и инфографика."
     },
-    cover: "assets/homakoll/1-1.png",
+    cover: "assets/homakoll/1-1.jpg",
     images: [
       { src: "assets/homakoll/1-label.jpg",       caption: { en: "Label", ru: "Этикетка" } },
       { src: "assets/homakoll/2-mockup.jpg",      caption: { en: "Bucket mockup", ru: "Мокап ведра" } },
