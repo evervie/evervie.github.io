@@ -86,7 +86,7 @@ window.PROJECTS = [
       en: "A live, working website on Tilda — my first complete project and my diploma work.",
       ru: "Рабочий сайт на Tilda — мой первый законченный проект и дипломная работа."
     },
-cover: "assets/util/1.png",
+cover: "assets/util/1.jpg",
     mock: { url: "utilizatsiyaothodov.tilda.ws" },
     link: "https://utilizatsiyaothodov.tilda.ws"
   },
