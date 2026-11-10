@@ -65,7 +65,7 @@ window.FILTERS = [
 ];
 window.PROJECTS = [
   {
-    title: { en: "EcoUtil — recycling website", ru: "ЭкоУтиль — сайт по утилизации отходов" },
+    title: { en: "EcoUtil", ru: "ЭкоУтиль" },
     type:  { en: "Website for a company", ru: "Сайт компании" },
     badge: { en: "My first project · diploma", ru: "Мой первый проект · диплом" },
     cats:  ["ux", "design"],
@@ -86,7 +86,8 @@ window.PROJECTS = [
       en: "A live, working website on Tilda — my first complete project and my diploma work.",
       ru: "Рабочий сайт на Tilda — мой первый законченный проект и дипломная работа."
     },
-    mock: { url: "utilizatsiyaothodov.tilda.ws", name: "ЭкоУтиль" },
+cover: "assets/util/1.png",
+    mock: { url: "utilizatsiyaothodov.tilda.ws" },
     link: "https://utilizatsiyaothodov.tilda.ws"
   },
   {
@@ -111,7 +112,7 @@ window.PROJECTS = [
       en: "Label, 3D bucket mockup, promo banner and infographic card.",
       ru: "Этикетка, 3D-мокап ведра, промо-баннер и инфографика."
     },
-    cover: "assets/homakoll/2-mockup-sm.jpg",
+    cover: "assets/homakoll/1-1.png",
     images: [
       { src: "assets/homakoll/1-label.jpg",       caption: { en: "Label", ru: "Этикетка" } },
       { src: "assets/homakoll/2-mockup.jpg",      caption: { en: "Bucket mockup", ru: "Мокап ведра" } },
@@ -119,5 +120,72 @@ window.PROJECTS = [
       { src: "assets/homakoll/4-infographic.jpg", caption: { en: "Infographic card", ru: "Инфографика" } },
     ],
   },
+{
+  title: {
+    en: "Maison Belladore",
+    ru: "Maison Belladore"
+  },
+
+  type: {
+    en: "Website design & development",
+    ru: "Дизайн и разработка сайта"
+  },
+
+  badge: {
+    en: "Web design project",
+    ru: "Веб-дизайн"
+  },
+
+  year: "2026",
+
+  cats: ["ux", "design"],
+
+  tags: [
+    "Web Design",
+    "UX/UI",
+    "Website"
+  ],
+
+  description: {
+    en: "A website for Maison Belladore.",
+    ru: "Создание сайта для Maison Belladore."
+  },
+
+  task: {
+    en: "To create an elegant digital experience.",
+    ru: "Создать элегантный цифровой опыт."
+  },
+
+  solution: {
+    en: "Developed the visual concept, website structure and interface.",
+    ru: "Разработала визуальную концепцию, структуру сайта и интерфейс."
+  },
+
+  results: {
+    en: "A fully developed and published website.",
+    ru: "Полностью разработанный и опубликованный сайт."
+  },
+
+  cover: "assets/maison/cover.png",
+
+  images: [
+    {
+      src: "assets/maison/homepage.png",
+      caption: {
+        en: "Homepage",
+        ru: "Главная страница"
+      }
+    },
+    {
+      src: "assets/maison/details.png",
+      caption: {
+        en: "Website details",
+        ru: "Детали сайта"
+      }
+    }
+  ],
+
+  link: "https://maisonbelladore.netlify.app"
+},
   { soon: true, title: { en: "Next case", ru: "Следующий кейс" }, type: { en: "In progress", ru: "В работе" } },
 ];
