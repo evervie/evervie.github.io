@@ -27,7 +27,7 @@ window.SITE = {
       story: [
         { y: "2011", t: "First conscious passion for creativity." },
         { y: "2020", t: "Graduated from art school with honours (red diploma)." },
-        { y: "2025", t: "First professional design projects." },
+        { y: "2023", t: "First professional design projects." },
       ],
       skills: ["Branding", "Graphic Design", "Web Design", "Packaging"],
       cta: "let's create something together.",
