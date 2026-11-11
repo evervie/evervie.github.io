@@ -146,7 +146,7 @@
   function view(x, y, w, h, S) { C.aspect = w / h; C.updateProjectionMatrix(); R.setViewport(x, y, w, h); R.setScissor(x, y, w, h); R.clearDepth(); R.render(S, C); }
   size(); addEventListener("resize", size);
 
-  const ang = { x: 0, y: 0, z: 0 }, av = { x: 0, y: 0, z: 0 }; let px = 0, py = 0, speed = 0, lx = null, ly = null, shift = 0;
+  const ang = { x: 0, y: 0, z: 0 }, av = { x: 0, y: 0, z: 0 }; let px = 0, py = 0, speed = 0, sp2 = 0, lx = null, ly = null, shift = 0;
   addEventListener("pointermove", e => {
     mouse.x = e.clientX / innerWidth * 2 - 1; mouse.y = e.clientY / innerHeight * 2 - 1; tx = e.clientX; ty = e.clientY;
     if (!seen) { seen = true; px = tx; py = ty; } if (ST) miniEl.style.opacity = 1;
@@ -180,12 +180,14 @@
     R.setScissorTest(false);
 
     if (SG) { animSigil(SG.o, tt, mouse.x * .1); SG.o.grp.rotation.set(.22 + mouse.y * .2 + Math.sin(tt * .3) * .08, 0, 0); SG.R.render(SG.S, SG.C); }
-    if (ST && seen) {   /* cursor star: soft follow, gentle tilt toward the direction of movement */
-      const dx = tx - px, dy = ty - py; px += dx * .12; py += dy * .12; speed *= .9; shift += speed * .003 + dx * .00015;
+    if (ST && seen) {   /* cursor star: eased follow, leans into the movement, no endless spinning */
+      const k = 1 - Math.exp(-dt * 8), ka = 1 - Math.exp(-dt * 3.2), dx = tx - px, dy = ty - py;
+      px += dx * k; py += dy * k; speed *= Math.exp(-dt * 3.5); sp2 += (speed - sp2) * ka; shift += (sp2 * .0016 + dx * .00006) * dt * 60;
       miniEl.style.transform = `translate(${px}px,${py}px)`;
-      av.y += (cl(dx * .012, -.6, .6) - av.y) * .06; av.x += (cl(-dy * .012, -.6, .6) - av.x) * .06; ang.z += .003 + cl(dx * .00006, -.004, .004);
-      ST.o.grp.rotation.set(av.x, av.y, ang.z); ST.o.grp.scale.setScalar(L(ST.o.grp.scale.x, hot ? .58 : .5, .08));
-      animSigil(ST.o, tt, shift, true); ST.o.ims.forEach(im => { im.uniforms.v.value += ((hot ? .5 : 0) - im.uniforms.v.value) * .1; });
+      av.y += (cl(dx * .009, -.45, .45) - av.y) * ka; av.x += (cl(-dy * .009, -.45, .45) - av.x) * ka;
+      ang.z += (cl(-dx * .005, -.28, .28) + Math.sin(tt * .45) * .05 - ang.z) * ka;
+      ST.o.grp.rotation.set(av.x + Math.sin(tt * .38) * .04, av.y, ang.z); ST.o.grp.scale.setScalar(L(ST.o.grp.scale.x, (hot ? .58 : .5) * (1 + Math.sin(tt * .9) * .015), ka));
+      animSigil(ST.o, tt, shift, true); ST.o.ims.forEach(im => { im.uniforms.v.value += ((hot ? .5 : 0) - im.uniforms.v.value) * ka; });
       ST.R.render(ST.S, ST.C);
     }
   })(performance.now());

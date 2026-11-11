@@ -24,8 +24,15 @@
   <div class="tools">
     <span class="soc" id="topSoc"></span>
     <button class="lang" id="lang"><span data-l="en">EN</span> / <span data-l="ru">RU</span></button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
   </div>
 </header>
+
+<div class="mnav-bg" id="mnavBg"></div>
+<aside class="mnav" id="mnav" aria-label="Menu" inert>
+  <nav><a href="#projects" data-i="nav_projects"></a><a href="#about" data-i="nav_about"></a><a href="#contact" data-i="nav_contact"></a></nav>
+  <button class="lang lang-m" id="langM" type="button"><span data-l="en">EN</span> / <span data-l="ru">RU</span></button>
+</aside>
 
 <main id="top">
   <section class="hero">

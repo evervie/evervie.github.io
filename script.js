@@ -11,11 +11,11 @@ const UI = {
   en: { nav_projects:"portfolio", nav_about:"about", nav_contact:"contact", h_projects:"selected <em>projects</em>", h_about:"about <span>me.</span>",
     sp_title:"special <em>cases</em>", sp_note:"Experimental work. This shelf keeps growing.", hello:"Hello! I’m",
     skills:"skills", tools:"tools", resume:"download resume", mail:"contact me", empty:"First projects are on the way.", touch:"Get in touch",
-    back:"← back to portfolio", visit:"Visit website", mailhint:"100% chance I’ll read it :)", policy:"Privacy", pol_t:"Privacy policy", pol_close:"Close", pol_html:"<p>This site is a portfolio. There are no forms, no analytics and no advertising cookies.</p><ul><li>Your language choice is saved in your browser (localStorage) and is never sent anywhere.</li><li>To display the page, fonts from Google Fonts and the three.js library (cdnjs) are loaded. These services may see your IP address and browser data.</li><li>The site is hosted on GitHub Pages, which may keep technical visit logs under its own rules.</li><li>If you write to me by email or in a messenger, I use your message only to reply and never share it.</li><li>Links to other sites (Telegram, Instagram, Pinterest, GitHub, the EcoUtil website) lead to resources with their own policies.</li></ul><p>Questions? Just write to me.</p>", h_process:"my <span>process</span>", h_story:"my <span>story</span>", resume_soon:"PDF coming soon", task:"task", solution:"solution", site:"view website ↗", prev:"Previous project", next:"Next project", lang:"Switch language" },
+    back:"← back to portfolio", visit:"Visit website", menu:"Menu", mailhint:"100% chance I’ll read it :)", policy:"Privacy", pol_t:"Privacy policy", pol_close:"Close", pol_html:"<p>This site is a portfolio. There are no forms, no analytics and no advertising cookies.</p><ul><li>Your language choice is saved in your browser (localStorage) and is never sent anywhere.</li><li>To display the page, fonts from Google Fonts and the three.js library (cdnjs) are loaded. These services may see your IP address and browser data.</li><li>The site is hosted on GitHub Pages, which may keep technical visit logs under its own rules.</li><li>If you write to me by email or in a messenger, I use your message only to reply and never share it.</li><li>Links to other sites (Telegram, Instagram, Pinterest, GitHub, the EcoUtil website) lead to resources with their own policies.</li></ul><p>Questions? Just write to me.</p>", h_process:"my <span>process</span>", h_story:"my <span>story</span>", resume_soon:"PDF coming soon", task:"task", solution:"solution", site:"view website ↗", prev:"Previous project", next:"Next project", lang:"Switch language" },
   ru: { nav_projects:"портфолио", nav_about:"обо мне", nav_contact:"контакты", h_projects:"избранные <em>проекты</em>", h_about:"обо <span>мне.</span>",
     sp_title:"особые <em>кейсы</em>", sp_note:"Экспериментальные работы. Эта полка будет пополняться.", hello:"Привет! Я",
     skills:"навыки", tools:"инструменты", resume:"скачать резюме", mail:"связаться со мной", empty:"Первые проекты скоро появятся.", touch:"Написать мне",
-    back:"← к портфолио", visit:"Перейти на сайт", mailhint:"100% шанс, что я прочитаю :)", policy:"Политика", pol_t:"Политика конфиденциальности", pol_close:"Закрыть", pol_html:"<p>Этот сайт — портфолио. На нём нет форм, аналитики и рекламных cookies.</p><ul><li>Выбранный язык интерфейса сохраняется в вашем браузере (localStorage) и никуда не отправляется.</li><li>Для отображения страницы загружаются шрифты Google Fonts и библиотека three.js (cdnjs). Эти сервисы могут видеть ваш IP-адрес и данные браузера.</li><li>Сайт размещён на GitHub Pages, который может вести технические журналы посещений по своим правилам.</li><li>Если вы пишете мне на почту или в мессенджер, я использую сообщение только для ответа и никому не передаю.</li><li>Ссылки на другие сайты (Telegram, Instagram, Pinterest, GitHub, сайт ЭкоУтиль) ведут на ресурсы со своими политиками.</li></ul><p>Есть вопросы — просто напишите мне.</p>", h_process:"мой <span>процесс</span>", h_story:"моя <span>история</span>", resume_soon:"PDF скоро появится", task:"задача", solution:"решение", site:"открыть сайт ↗", prev:"Предыдущий проект", next:"Следующий проект", lang:"Сменить язык" }
+    back:"← к портфолио", visit:"Перейти на сайт", menu:"Меню", mailhint:"100% шанс, что я прочитаю :)", policy:"Политика", pol_t:"Политика конфиденциальности", pol_close:"Закрыть", pol_html:"<p>Этот сайт — портфолио. На нём нет форм, аналитики и рекламных cookies.</p><ul><li>Выбранный язык интерфейса сохраняется в вашем браузере (localStorage) и никуда не отправляется.</li><li>Для отображения страницы загружаются шрифты Google Fonts и библиотека three.js (cdnjs). Эти сервисы могут видеть ваш IP-адрес и данные браузера.</li><li>Сайт размещён на GitHub Pages, который может вести технические журналы посещений по своим правилам.</li><li>Если вы пишете мне на почту или в мессенджер, я использую сообщение только для ответа и никому не передаю.</li><li>Ссылки на другие сайты (Telegram, Instagram, Pinterest, GitHub, сайт ЭкоУтиль) ведут на ресурсы со своими политиками.</li></ul><p>Есть вопросы — просто напишите мне.</p>", h_process:"мой <span>процесс</span>", h_story:"моя <span>история</span>", resume_soon:"PDF скоро появится", task:"задача", solution:"решение", site:"открыть сайт ↗", prev:"Предыдущий проект", next:"Следующий проект", lang:"Сменить язык" }
 };
 const UI2 = {
   en: { h_projects:"portfolio", p_eyebrow:"selected projects", p_sub:"my design & experience", hm1:"<b>2</b> complete projects in the portfolio", hm2:"<b>5</b> years in digital design", hbtn:"My work", f_all:"All projects", f_special:"Special cases", sp_big:"Special cases", sp_desc:"Experimental projects and unique concepts.", explore:"Explore", soon:"coming soon", scroll:"scroll to explore", made:"designed & built by me", pf:"Portfolio", pf1:"PORT", pf2:"folio", hi1:"Hello!", hi2:"I’m", role:"role", insight:"insight", results:"results" },
@@ -127,7 +127,7 @@ function applyLang(l) {
   const t = S.text[l], u = UI[l];
   root.lang = l; root.dataset.lang = l;
   $$("[data-i]").forEach(e => e.innerHTML = u[e.dataset.i]);
-  $("#lang").setAttribute("aria-label", u.lang); $("#mPrev").setAttribute("aria-label", u.prev); $("#mNext").setAttribute("aria-label", u.next);
+  $("#lang").setAttribute("aria-label", u.lang); $("#langM").setAttribute("aria-label", u.lang); $("#burger").setAttribute("aria-label", u.menu); $("#mPrev").setAttribute("aria-label", u.prev); $("#mNext").setAttribute("aria-label", u.next);
   $("#pfEn").innerHTML = `<span class="l1">${u.pf1}</span><span class="l2">${u.pf2}.</span>`; dispatchEvent(new Event("pflayout")); $("h1.pf").setAttribute("aria-label", u.pf);
   $("#role").textContent = t.role;
   $("#cta").textContent = t.cta;
@@ -144,7 +144,7 @@ function applyLang(l) {
   document.title = `${S.name} — ${t.role}`;
   renderGrid(); if (!modal.hidden) openProject(cur);
 }
-$("#lang").onclick = () => applyLang(lang === "en" ? "ru" : "en");
+$("#lang").onclick = $("#langM").onclick = () => applyLang(lang === "en" ? "ru" : "en");
 
 /* ---- welcome screen: ~5 s, then fades out and the page starts ---- */
 const splash = $("#splash"); let splashDone = false;
@@ -205,3 +205,16 @@ $("#foot").addEventListener("click", e => { if (e.target.closest(".pol-link")) o
 $("#polX").onclick = closePol;
 pol.addEventListener("click", e => { if (e.target === pol) closePol(); });
 addEventListener("keydown", e => { if (e.key === "Escape" && !pol.hidden) closePol(); });
+
+/* ---- mobile menu: glass side panel ---- */
+const mnav = $("#mnav"), burger = $("#burger"), wide = matchMedia("(min-width:861px)");
+function setMenu(on) {
+  root.classList.toggle("menu-open", on); burger.setAttribute("aria-expanded", on); mnav.inert = !on;
+  if (on) mnav.querySelector("a").focus(); else if (root.dataset.menuFocus) burger.focus();
+  root.dataset.menuFocus = on ? "1" : "";
+}
+burger.onclick = () => setMenu(!root.classList.contains("menu-open"));
+$("#mnavBg").onclick = () => setMenu(false);
+mnav.addEventListener("click", e => { if (e.target.closest("a")) setMenu(false); });
+addEventListener("keydown", e => { if (e.key === "Escape" && root.classList.contains("menu-open")) setMenu(false); });
+wide.addEventListener("change", e => { if (e.matches) setMenu(false); });

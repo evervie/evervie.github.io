@@ -123,98 +123,127 @@
     });
   } catch (e) { /* DOM letters stay visible as a fallback */ }
 
-  /* ================= 3) crystal tulips (contact block + project page) ================= */
+  /* ================= 3) crystal tulips (contact block + project page) =================
+     One visual system with the hero flower: the same pale glass body, the same lilac / white / pink
+     thin-film reflections (irid), the same light panels (env) and the same slow, soft motion. */
   function garden(cv, sec, modal) {
   try {
     const R = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: !LOW });
     R.setPixelRatio(Math.min(DPR, 1.6));
     const Z = 10, C = new THREE.PerspectiveCamera(30, 1, .1, 60); C.position.z = Z;
-    const S = new THREE.Scene();
-    const VS = "attribute vec3 pv;varying vec3 vN,vW,vP;void main(){vN=normalize(normalMatrix*normal);vec4 q=modelViewMatrix*vec4(position,1.);vW=-q.xyz;vP=pv;gl_Position=projectionMatrix*q;}";
-    const FS = `uniform float t,h,ln; varying vec3 vN,vW,vP;
-      void main(){
-        vec3 n=normalize(vN); if(!gl_FrontFacing) n=-n; vec3 vv=normalize(vW);
-        float f=1.-abs(dot(n,vv)); float u=vP.x, v=vP.y;
-        float hue=f*1.4+u*.7+v*.25+h+t*.02;
-        vec3 pal=.5+.5*cos(6.2832*(hue+vec3(0.,.33,.67)));
-        vec3 col=mix(vec3(.04,.1,.09),pal,.5+.45*f);
-        float ed=smoothstep(.9,1.,abs(v)), tip=smoothstep(.93,1.,u);
-        float line=max(ed,tip*.8)*ln;
-        col=mix(col,vec3(1.,.93,.78),line*.85);
-        float spec=pow(max(dot(reflect(-vv,n),normalize(vec3(-.4,.7,.6))),0.),22.);
-        col+=spec*.6;
-        float a=min(1.,.28+.68*pow(f,1.2)+line*.5+spec*.4);
-        gl_FragColor=vec4(col*a,a);
-      }`;
-    const smat = (hh, ln) => new THREE.ShaderMaterial({ uniforms: { t: { value: 0 }, h: { value: hh }, ln: { value: ln } }, vertexShader: VS, fragmentShader: FS, transparent: true, premultipliedAlpha: true, side: THREE.DoubleSide, depthWrite: false });
-    /* head = 6 cupped petals (3 outer + 3 inner) */
-    function headGeo() {
-      const nu = LOW ? 12 : 18, nv = 8, pos = [], pv = [], idx = []; let off = 0;
+    const S = new THREE.Scene(); S.environment = env(R, true);
+    const body = op => new THREE.MeshPhysicalMaterial({ color: 0xe6e8ff, metalness: .1, roughness: .05, clearcoat: 1, clearcoatRoughness: .05, transparent: true, opacity: op, envMapIntensity: 2, side: THREE.DoubleSide, depthWrite: false });
+    const edge = op => new THREE.LineBasicMaterial({ color: 0xdfe6ff, transparent: true, opacity: op, depthWrite: false });
+    const grid2geo = (pos, nu, nv, count) => {   /* merged grids -> indexed geometry */
+      const idx = []; for (let g = 0; g < count; g++) { const off = g * (nu + 1) * (nv + 1); for (let i = 0; i < nu; i++) for (let j = 0; j < nv; j++) { const a = off + i * (nv + 1) + j, b = a + 1, c = a + nv + 1, d = c + 1; idx.push(a, b, c, b, d, c); } }
+      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
+    };
+    const NU = LOW ? 12 : 20, NV = 10;
+    /* tulip head: 3 outer + 3 inner petals; P.open 0 = closed bud ... 1 = wide open */
+    function headGeo(P) {
+      const pos = [], lp = [];
       for (let k = 0; k < 6; k++) {
-        const o = k < 3, phi = (k % 3) * 2.0944 + (o ? 0 : 1.0472), Rr = o ? 1 : .84, Hh = o ? 1 : .93, wd = o ? 1 : .95;
-        for (let i = 0; i <= nu; i++) {
-          const u = i / nu, aw = .98 * wd * Math.pow(Math.max(0, Math.sin(Math.PI * Math.pow(u, .7))), .75);
-          const r = Rr * (.16 + .84 * Math.pow(Math.max(0, Math.sin(Math.PI * Math.pow(u, .82))), .6)) * .62 + Rr * .12 * Math.pow(u, 5);
-          for (let j = 0; j <= nv; j++) { const v = j / nv * 2 - 1, rr = r * (1 - .1 * v * v), a = phi + v * aw; pos.push(Math.cos(a) * rr, u * 1.15 * Hh, Math.sin(a) * rr); pv.push(u, v, k); }
+        const outer = k < 3, phi = (k % 3) * 2.0944 + (outer ? 0 : 1.0472) + P.rot + P.j[k] * .12;
+        const o = cl(P.open + (outer ? .07 : -.05) + P.j[k] * .08), L = P.L * (outer ? 1 : .9 + .04 * P.j[k]);
+        const cen = []; let r = .06, y = 0;
+        for (let i = 0; i <= NU; i++) {
+          const u = i / NU, ang = P.belly * (1 - .3 * o) * (Math.cos(Math.PI * u * 1.15) + .7 * u * u * u) - (1 - o) * P.tuck * u * u + o * P.flare * Math.pow(u, 2);   /* cup: out, then back in; open petals flare at the tips */
+          cen.push([r, y]); r = Math.max(.02, r + Math.sin(ang) * L / NU); y += Math.cos(ang) * L / NU;
         }
-        for (let i = 0; i < nu; i++) for (let j = 0; j < nv; j++) { const a = off + i * (nv + 1) + j, b = a + 1, c = a + nv + 1, d = c + 1; idx.push(a, b, c, b, d, c); }
-        off += (nu + 1) * (nv + 1);
+        const rows = [];
+        for (let i = 0; i <= NU; i++) {
+          const u = i / NU, aw = P.W * (outer ? 1 : .94) * Math.pow(Math.max(0, Math.sin(Math.PI * Math.pow(u, P.pt))), .85), row = [];
+          for (let j = 0; j <= NV; j++) {
+            const v = j / NV * 2 - 1, cup = .11 * (1 - o * u) - o * .1 * u * u * u;
+            const rr = cen[i][0] * (1 - cup * v * v) * (1 + .03 * Math.sin(v * 3.6 + u * 5 + k * 2.1 + P.seed)), a = phi + v * aw, yy = cen[i][1] + .05 * u * v * v * (1 - o * .5);
+            const p = [Math.cos(a) * rr, yy, Math.sin(a) * rr]; pos.push(...p); row.push(p);
+          }
+          rows.push(row);
+        }
+        [0, NV / 2, NV].forEach(j => { for (let i = 0; i < NU; i++) lp.push(...rows[i][j], ...rows[i + 1][j]); });   /* thin outline + centre vein */
       }
-      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("pv", new THREE.Float32BufferAttribute(pv, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
+      return { geo: grid2geo(pos, NU, NV, 6), lines: new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(lp, 3)) };
     }
-    const HG = headGeo();
-    function stamens() {
-      const p = []; for (let i = 0; i < 5; i++) { const a = i * 1.26, x = Math.cos(a) * .12, z = Math.sin(a) * .12; p.push(0, 0, 0, x, .62, z); }
-      const l = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(p, 3)), new THREE.LineBasicMaterial({ color: 0xfff1d8, transparent: true, opacity: .6 }));
-      return l;
+    /* long glass leaf */
+    function leafGeo(Ll, side, seed) {
+      const nu = 16, nv = 6, pos = [], th = .7 + .3 * Math.sin(seed);
+      for (let i = 0; i <= nu; i++) {
+        const u = i / nu, cx = side * Ll * .5 * u * u, cy = Ll * (.92 * u - .06 * u * u), w = .13 * Math.pow(Math.max(0, Math.sin(Math.PI * Math.pow(u, .6))), .9);
+        for (let j = 0; j <= nv; j++) { const v = j / nv * 2 - 1; pos.push(cx + Math.cos(th) * v * w, cy, Math.sin(th) * v * w + .05 * v * v * w * 4); }
+      }
+      return grid2geo(pos, nu, nv, 1);
     }
-    /* [x (−1..1 of half width), head height (0..1 of canvas), size, lean, phase, hue] */
-    const SPEC = [[-.78, .72, 1.5, .1, 0, 0], [.8, .74, 1.3, -.09, 1.6, .25], [-.3, .5, .85, .05, 3.1, .5], [.22, .58, .8, -.04, 4.4, .75], [-.55, .28, .5, .08, 2.2, .1], [.55, .33, .55, -.07, 5.2, .4], [.02, .24, .42, .02, .7, .6], [.96, .42, .62, -.12, 3.7, .9], [-.1, .38, .55, .05, 1.1, .3], [-.97, .38, .6, .1, 5.9, .65]].slice(0, modal ? (LOW ? 5 : 7) : (LOW ? 6 : 10));
-    const T = SPEC.map(sp => ({ sp, pivot: new THREE.Group(), head: new THREE.Group(), mats: [], S: 3 }));
-    T.forEach(o => {
-      const [, , size, lean, , hue] = o.sp, hm = smat(hue, 1), sm = smat(hue + .2, 0); o.mats.push(hm, sm);
-      const hd = new THREE.Mesh(HG, hm); hd.scale.setScalar(size); o.head.add(hd);
-      const st = stamens(); st.scale.setScalar(size); o.head.add(st);
-      o.hm = hm; o.sm = sm; o.pivot.add(o.head); S.add(o.pivot);
-      o.stem = new THREE.Mesh(new THREE.BufferGeometry(), sm); o.pivot.add(o.stem);
+    function stamens(n, h) {
+      const g = new THREE.Group(), p = [], m = new THREE.Matrix4();
+      const tips = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 8, 6), new THREE.MeshBasicMaterial({ color: 0xfff1e6 }), n); tips.frustumCulled = false;
+      for (let i = 0; i < n; i++) { const a = i * 2.39996, s = .06 + .1 * Math.sqrt((i + .5) / n), x = Math.cos(a) * s, z = Math.sin(a) * s, hh = h * (.78 + .22 * ((i * 7) % 5) / 5); p.push(0, 0, 0, x, hh, z); m.makeScale(.028, .028, .028).setPosition(x, hh, z); tips.setMatrixAt(i, m); }
+      g.add(new THREE.LineSegments(new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(p, 3)), edge(.5)), tips); return g;
+    }
+    /* x (−1..1 of half width), head height (0..1 of canvas), size, lean, phase, open, W, L, belly, tuck, pointiness, tint, leaves */
+    const SPEC = [
+      [-.80, .56, 1.55,  .12, 0.0, .55, 1.00, 1.22, .52, 1.25, .72, .00, 2],   /* big, slightly open */
+      [ .80, .58, 1.40, -.10, 1.6, .92, 1.04, 1.12, .46, 1.10, .62, .10, 2],   /* big, wide open */
+      [-.36, .42,  .95,  .06, 3.1, .06, 1.00, 1.30, .60, 1.35, .78, .20, 1],   /* closed */
+      [ .24, .46,  .90, -.05, 4.4, .42, .98, 1.18, .50, 1.20, .70, .05, 1],   /* slightly open */
+      [-.60, .24,  .60,  .10, 2.2, .00, .92, 1.06, .56, 1.30, .85, .25, 0],   /* small bud */
+      [-.10, .30,  .72,  .04, 5.2, .78, 1.06, 1.00, .42, 1.00, .66, .15, 1],   /* open */
+      [ .56, .28,  .62, -.08, .70, .22, .98, 1.14, .54, 1.25, .76, .30, 0],
+      [ .98, .36,  .66, -.12, 3.7, .50, 1.00, 1.16, .50, 1.18, .72, .08, 0],
+      [-.98, .34,  .64,  .10, 5.9, .08, .94, 1.20, .58, 1.30, .80, .22, 0],
+      [ .02, .18,  .46,  .02, 1.1, .00, .90, 1.00, .54, 1.30, .84, .12, 0],
+    ].slice(0, modal ? (LOW ? 5 : 7) : (LOW ? 6 : 10));
+    const T = SPEC.map((sp, n) => {
+      const [, , size, lean, ph, open, W, L, belly, tuck, pt, tint, leaves] = sp, rnd = i => Math.sin(n * 12.9898 + i * 78.233);
+      const P = { open, W, L, belly: belly * 1.8, tuck: tuck * .18, pt, flare: 1.8, rot: rnd(1) * 1.2, seed: n * 1.7, j: [0, 1, 2, 3, 4, 5].map(i => rnd(i + 3)) };
+      const hg = headGeo(P), o = { sp, pivot: new THREE.Group(), head: new THREE.Group(), mats: [] };
+      const film = irid(1.7, tint); film.uniforms.v.value = .12 + .1 * open; o.mats.push(film);
+      const hm = new THREE.Mesh(hg.geo, body(.2 + .04 * (1 - open))), fm = new THREE.Mesh(hg.geo, film); fm.renderOrder = 1;
+      o.head.add(hm, fm, new THREE.LineSegments(hg.lines, edge(.2)));
+      if (open > .3) o.head.add(stamens(6, L * .62));
+      o.stemFilm = irid(1.0, tint + .1); o.stemFilm.uniforms.v.value = .1; o.mats.push(o.stemFilm);
+      o.stem = new THREE.Mesh(new THREE.BufferGeometry(), body(.16)); o.stemF = new THREE.Mesh(o.stem.geometry, o.stemFilm); o.stemF.renderOrder = 1;
+      o.pivot.add(o.stem, o.stemF, o.head);
+      o.leaves = []; for (let i = 0; i < leaves; i++) { const side = i ? 1 : -1, lg = leafGeo(1, side, n + i), lf = irid(1.3, tint + .15); lf.uniforms.v.value = .1; o.mats.push(lf); const a = new THREE.Mesh(lg, body(.14)), b = new THREE.Mesh(lg, lf); b.renderOrder = 1; const g = new THREE.Group(); g.add(a, b); o.pivot.add(g); o.leaves.push(g); }
+      S.add(o.pivot); return o;
     });
     let HW = 4, HH = 2.7;
     const place = () => {
-      const w = modal ? innerWidth : sec.clientWidth; if (!w) return; const h = Math.round(modal ? Math.min(innerHeight * .5, 460) : Math.min(innerHeight * .72, 660)), asp = w / h;
-      cv.style.height = h + "px";
-      R.setSize(w, h, false); C.aspect = asp; C.updateProjectionMatrix();
+      const w = modal ? innerWidth : sec.clientWidth; if (!w) return;
+      const h = Math.round(modal ? Math.min(innerHeight * .56, 520) : Math.min(innerHeight * .82, 760)), asp = w / h;
+      cv.style.height = h + "px"; R.setSize(w, h, false); C.aspect = asp; C.updateProjectionMatrix();
       HH = Math.tan(15 * Math.PI / 180) * Z; HW = HH * asp;
       const sc = cl(asp / 1.7, .55, 1.15);
       T.forEach(o => {
-        const [fx, fh, size, lean] = o.sp, x = fx * HW * .96, base = -HH - .5, top = -HH + fh * 2 * HH, len = Math.max(1, top - base) , s = size * sc;
-        o.pivot.position.set(x, base, 0); o.len = len; o.lean = lean; o.s = s;
-        const pts = []; for (let i = 0; i <= 12; i++) { const k = i / 12; pts.push(new THREE.Vector3(lean * len * k * k + Math.sin(Math.PI * k) * .05 * len * Math.sign(lean || 1), len * k, 0)); }
-        const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, .035 * s + .02, LOW ? 5 : 8, false), uv = g.attributes.uv, pvv = [];
-        for (let i = 0; i < uv.count; i++) pvv.push(uv.getX(i) * .5, uv.getY(i) * 2 - 1, 0);
-        g.setAttribute("pv", new THREE.Float32BufferAttribute(pvv, 3)); o.stem.geometry.dispose(); o.stem.geometry = g;
-        o.head.position.set(pts[12].x, len, 0); o.head.scale.setScalar(sc);
+        const [fx, fh, size, lean] = o.sp, x = fx * HW * .96, base = -HH - .5, top = -HH + fh * 2 * HH, len = Math.max(1, top - base), s = size * sc;
+        o.pivot.position.set(x, base, 0); o.lean = lean;
+        const pts = []; for (let i = 0; i <= 14; i++) { const k = i / 14; pts.push(new THREE.Vector3(lean * len * k * k + Math.sin(Math.PI * k) * .05 * len * Math.sign(lean || 1), len * k, 0)); }
+        const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 28, .03 * s + .018, LOW ? 5 : 8, false);
+        o.stem.geometry.dispose(); o.stem.geometry = g; o.stemF.geometry = g;
+        o.head.position.set(pts[14].x, len, 0); o.head.scale.setScalar(s * 1.1);
+        o.leaves.forEach((lg, i) => { const Ll = Math.min(len * .55, 2.2 * sc) * (i ? .8 : 1); lg.scale.setScalar(Ll); lg.position.set(pts[2 + i].x, pts[2 + i].y, 0); });
       });
     };
     place(); addEventListener("resize", place);
     let vis = false; if (!modal) new IntersectionObserver(es => { vis = es[0].isIntersecting; }, { rootMargin: "100px" }).observe(sec);
-    /* wind: gentle always, stronger when the pointer moves over the flowers */
+    /* wind: slow and soft; a little stronger when the pointer sweeps over the flowers */
     let energy = 0, dirx = 0, lpx = null;
     addEventListener("pointermove", e => {
       const r = cv.getBoundingClientRect();
-      if (e.clientY > r.top && e.clientY < r.bottom) { if (lpx !== null) { const dx = e.clientX - lpx; energy = Math.min(1.6, energy + Math.abs(dx) * .004); dirx = dx > 0 ? 1 : -1; } lpx = e.clientX; } else lpx = null;
+      if (e.clientY > r.top && e.clientY < r.bottom) { if (lpx !== null) { const dx = e.clientX - lpx; energy = Math.min(1.4, energy + Math.abs(dx) * .003); dirx = dx > 0 ? 1 : -1; } lpx = e.clientX; } else lpx = null;
     });
     const t0 = performance.now(); let wd = 0;
     loops.push(function (now) {
       if (modal) { const on = root.classList.contains("modal-open"); if (on && !vis) place(); vis = on; }
       if (!vis) return;
-      const t = RM ? 0 : (now - t0) / 1000; energy *= .985; wd += (dirx * energy - wd) * .05;
-      const gust = Math.max(0, Math.sin(t * .23) * Math.sin(t * .57 + 1));
+      const t = RM ? 0 : (now - t0) / 1000; energy *= .988; wd += (dirx * energy - wd) * .035;
+      const gust = Math.max(0, Math.sin(t * .17) * Math.sin(t * .41 + 1));
       T.forEach(o => {
-        const ph = o.sp[4], w = Math.sin(t * .55 + ph) * .04 + Math.sin(t * 1.3 + ph * 1.7) * .016 + gust * .035;
-        o.pivot.rotation.z = o.lean * .35 + w + wd * .05;
-        o.head.rotation.z = -Math.atan(2 * o.lean) + w * 1.1 + wd * .08;
-        o.head.rotation.x = .38 + Math.sin(t * .8 + ph) * .05; o.head.rotation.y = Math.sin(t * .3 + ph) * .25;
-        o.mats.forEach(m => { m.uniforms.t.value = t; });
+        const ph = o.sp[4], w = Math.sin(t * .38 + ph) * .034 + Math.sin(t * .9 + ph * 1.7) * .012 + gust * .028;
+        o.pivot.rotation.z = o.lean * .35 + w + wd * .04;
+        o.head.rotation.z = -Math.atan(2 * o.lean) + w * 1.15 + wd * .06;
+        o.head.rotation.x = .34 + Math.sin(t * .55 + ph) * .04; o.head.rotation.y = Math.sin(t * .22 + ph) * .22;
+        o.leaves.forEach((lg, i) => { lg.rotation.z = Math.sin(t * .5 + ph + i * 1.3) * .035 + w * .6; });
+        o.mats.forEach(m => { m.uniforms.t.value = o.sp[11] + t * .012; });
       });
       R.render(S, C);
     });
